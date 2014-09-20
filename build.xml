@@ -1,0 +1,7 @@
+<project
+	basedir="." 
+	default="help">
+	
+	<import file="./.infra/build/ant/common.xml"/>
+
+</project>
