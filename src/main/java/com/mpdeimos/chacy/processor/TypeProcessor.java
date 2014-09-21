@@ -9,7 +9,6 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -27,12 +26,17 @@ import com.mpdeimos.chacy.view.TypeWriter;
  * Annotation processor that processes all types annotated with
  * {@link Chacy.Type}.
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("com.mpdeimos.chacy.Chacy.Type")
 public class TypeProcessor extends AbstractProcessor
 {
 	/** The global configuration. */
 	private final Config config = new Config();
+
+	@Override
+	public SourceVersion getSupportedSourceVersion()
+	{
+		return SourceVersion.latest();
+	}
 
 	/** {@inheritDoc} */
 	@Override
