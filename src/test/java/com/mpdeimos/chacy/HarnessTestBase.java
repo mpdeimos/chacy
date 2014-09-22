@@ -24,7 +24,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
-import com.mpdeimos.chacy.processor.TypeProcessor;
 import com.mpdeimos.chacy.util.FileUtil;
 
 /** Base class for Harness tests. */
@@ -70,9 +69,9 @@ public abstract class HarnessTestBase
 
 		/**
 		 * The annotation processor for compilation. Default is
-		 * {@link TypeProcessor}.
+		 * {@link ChacyProcessor}.
 		 */
-		private Processor processor = new TypeProcessor();
+		private Processor processor = new ChacyProcessor();
 
 		/** Constructor. */
 		public Harness(Path output, String harness)

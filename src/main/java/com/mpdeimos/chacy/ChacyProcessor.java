@@ -1,4 +1,4 @@
-package com.mpdeimos.chacy.processor;
+package com.mpdeimos.chacy;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ import com.mpdeimos.chacy.view.TypeWriter;
  * {@link Chacy.Type}.
  */
 @SupportedAnnotationTypes("com.mpdeimos.chacy.Chacy.Type")
-public class TypeProcessor extends AbstractProcessor
+public class ChacyProcessor extends AbstractProcessor
 {
 	/** The global configuration. */
 	private final Config config = new Config();

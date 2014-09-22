@@ -14,6 +14,21 @@
 		<compile conf="ifc" version="${build.version.ifc}"/>
 	</target>
 	
+	<target name="--after-test" depends="integration-test"/>
+	<target name="integration-test" depends="jar">
+		<delete dir="./test-tmp/integration"/>
+		<mkdir dir="./test-tmp/integration"/>
+		<javac destdir="./test-tmp/integration" debug="true" source="1.6" target="1.6" compiler="javac1.6" includeantruntime="false">
+			<src path="./src/test/resources/harness/simple/src"/>
+			<!-- TODO provide compiler JAR -->
+			<compilerarg line="-processorpath ./bin/main/jar/com.mpdeimos.chacy.jar:./lib/main/java/antlr-runtime.jar:./lib/main/java/gson.jar:./lib/main/java/ST4.jar:./bin/ifc/jar/com.mpdeimos.chacy.ifc.jar"/>
+			<classpath>
+				<fileset dir="./lib/main/java" includes="*.jar" />
+				<file file="./bin/ifc/jar/com.mpdeimos.chacy.ifc.jar"/>
+			</classpath>
+		</javac>
+	</target>
+	
 	<target name="--on-jar" depends="jar-ifc"/>
 	<target name="jar-ifc">
 		<create-jar conf="ifc" module="${ivy.module}.ifc"/>
