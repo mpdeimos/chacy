@@ -4,34 +4,71 @@
 	
 	<import file="./.infra/build/ant/common.xml"/>
 
-	<target name="--on-deps" depends="deps-ifc"/>
-	<target name="deps-ifc">
+	<target description="Resolves annotation interface dependencies."
+		name="deps-ifc"
+		extensionOf="--on-deps">
+		
 		<ivy-retrieve conf="ifc"/>
 	</target>
 	
-	<target name="--before-compile-main" depends="compile-ifc"/>
-	<target name="compile-ifc" depends="deps-ifc">
+	<target description="Compiles the annotation interface."
+		name="compile-ifc"
+		depends="deps-ifc"
+		extensionOf="--before-compile-main">
+		
 		<compile conf="ifc" version="${build.version.ifc}"/>
 	</target>
 	
-	<target name="--after-test" depends="integration-test"/>
-	<target name="integration-test" depends="jar">
+	<target description="Creates a JAR containing the annotation interfaces."
+		name="jar-ifc"
+		extensionOf="--on-jar"
+		depends="compile-ifc">
+		
+		<create-jar conf="ifc" module="${ivy.module}.ifc"/>
+	</target>
+	
+	<target description="Creates a combined JAR with all dependencies that can be passed as single processorpath argument to javac."
+		name="jar-all"
+		extensionOf="--after-jar"
+		depends="compile-main,jar-ifc">
+		
+		<create-jar conf="main" module="${ivy.module}.all">
+			<additional-includes>
+				<zipgroupfileset dir="./lib/main/java" includes="*.jar" />
+				<zipgroupfileset dir="./bin/ifc/jar" includes="com.mpdeimos.chacy.ifc.jar" />
+			</additional-includes>
+		</create-jar>
+	</target>
+	
+	<target description="Performs an integration test by compiling a sample class file with annotation. Compilation is tested with an older JDK runtime, but new compiler."
+		name="integration-test"
+		extensionOf="--after-test"
+		depends="jar-all">
+		
 		<delete dir="./test-tmp/integration"/>
 		<mkdir dir="./test-tmp/integration"/>
-		<javac destdir="./test-tmp/integration" debug="true" source="1.6" target="1.6" compiler="javac1.6" includeantruntime="false">
-			<src path="./src/test/resources/harness/simple/src"/>
-			<!-- TODO provide compiler JAR -->
-			<compilerarg line="-processorpath ./bin/main/jar/com.mpdeimos.chacy.jar:./lib/main/java/antlr-runtime.jar:./lib/main/java/gson.jar:./lib/main/java/ST4.jar:./bin/ifc/jar/com.mpdeimos.chacy.ifc.jar"/>
+		<javac destdir="./test-tmp/integration"
+			bootclasspath="${java.home.6}/jre/lib/rt.jar"
+			debug="true"
+			source="1.6"
+			target="1.6"
+			includeantruntime="false">
+			<src path="./src/test/resources/integration"/>
+			<compilerarg line="-processorpath ./bin/main/jar/com.mpdeimos.chacy.all.jar"/>
 			<classpath>
-				<fileset dir="./lib/main/java" includes="*.jar" />
 				<file file="./bin/ifc/jar/com.mpdeimos.chacy.ifc.jar"/>
 			</classpath>
 		</javac>
+		
+		<assert-not-exists file="./test-tmp/integration/Main.java"/>
+		<assert-exists file="./test-tmp/integration/Main.class"/>
+		<assert-exists file="./test-tmp/integration/csharp/Main.cs"/>
+		<assert-exists file="./test-tmp/integration/vala/Main.vala"/>
+		
+		<exec executable="${java.home.6}/jre/bin/java" failonerror="true" outputproperty="integration-test.output">
+			<arg line="-cp ./test-tmp/integration"/>
+			<arg line="Main"/>
+		</exec>
+		<assert-equals expected="Hello Chacy!" actual="${integration-test.output}"/>
 	</target>
-	
-	<target name="--on-jar" depends="jar-ifc"/>
-	<target name="jar-ifc">
-		<create-jar conf="ifc" module="${ivy.module}.ifc"/>
-	</target>
-
 </project>
