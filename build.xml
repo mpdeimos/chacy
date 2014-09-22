@@ -2,7 +2,7 @@
 	basedir="." 
 	default="help">
 	
-	<import file="./.infra/build/ant/common.xml"/>
+	<import file="./.infra/build/ant/base.xml"/>
 
 	<target description="Resolves annotation interface dependencies."
 		name="deps-ifc"
