@@ -6,31 +6,31 @@
 
 	<target description="Resolves annotation interface dependencies."
 		name="deps-ifc"
-		extensionOf="--on-deps">
+		extensionOf="@on-deps">
 		
 		<ivy-retrieve conf="ifc"/>
 	</target>
 	
 	<target description="Compiles the annotation interface."
-		name="compile-ifc"
+		name="build-ifc"
 		depends="deps-ifc"
-		extensionOf="--before-compile-main">
+		extensionOf="@before-build-main">
 		
 		<compile conf="ifc" version="${build.version.ifc}"/>
 	</target>
 	
 	<target description="Creates a JAR containing the annotation interfaces."
 		name="jar-ifc"
-		extensionOf="--on-jar"
-		depends="compile-ifc">
+		extensionOf="@on-jar"
+		depends="build-ifc">
 		
 		<create-jar conf="ifc" module="${ivy.module}.ifc"/>
 	</target>
 	
 	<target description="Creates a combined JAR with all dependencies that can be passed as single processorpath argument to javac."
 		name="jar-all"
-		extensionOf="--after-jar"
-		depends="compile-main,jar-ifc">
+		extensionOf="@after-jar"
+		depends="build-main,jar-ifc">
 		
 		<create-jar conf="main" module="${ivy.module}.all">
 			<additional-includes>
@@ -42,7 +42,7 @@
 	
 	<target description="Performs an integration test by compiling a sample class file with annotation. Compilation is tested with an older JDK runtime, but new compiler."
 		name="integration-test"
-		extensionOf="--after-test"
+		extensionOf="@after-test"
 		depends="jar-all">
 		
 		<delete dir="./test-tmp/integration"/>
