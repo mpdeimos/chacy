@@ -19,6 +19,7 @@ import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.Config;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.model.deviant.TypeDeviant;
+import com.mpdeimos.chacy.transform.Transformator;
 import com.mpdeimos.chacy.util.JavaUtil;
 import com.mpdeimos.chacy.view.TypeWriter;
 
@@ -103,8 +104,8 @@ public class TypeProcessor extends AbstractProcessor
 				continue;
 			}
 
-			TypeDeviant[] types = language.getTransformator().transform(type,
-					this.config);
+			Transformator transformator = Transformator.Factory.get(language);
+			TypeDeviant[] types = transformator.transform(type, this.config);
 
 			deviantTypes.put(language, types);
 		}

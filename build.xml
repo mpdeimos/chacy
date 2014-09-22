@@ -4,4 +4,19 @@
 	
 	<import file="./.infra/build/ant/common.xml"/>
 
+	<target name="--on-deps" depends="deps-ifc"/>
+	<target name="deps-ifc">
+		<ivy-retrieve conf="ifc"/>
+	</target>
+	
+	<target name="--before-compile-main" depends="compile-ifc"/>
+	<target name="compile-ifc" depends="deps-ifc">
+		<compile conf="ifc" version="${build.version.ifc}"/>
+	</target>
+	
+	<target name="--on-jar" depends="jar-ifc"/>
+	<target name="jar-ifc">
+		<create-jar conf="ifc" module="${ivy.module}.ifc"/>
+	</target>
+
 </project>

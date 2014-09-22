@@ -30,6 +30,7 @@
     	e:author="Martin Poehlmann"
     />
     <configurations>
+        <conf name="ifc" description="Building the annotation interfaces" />
         <conf name="main" description="Building and executing the library" />
         <conf name="test" extends="main" visibility="private" description="Testing the library" />
     </configurations>

@@ -3,7 +3,7 @@ package com.mpdeimos.chacy;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
-///** Class containing all Chacy annotations. */
+/** Class containing all Chacy annotations. */
 public final class Chacy
 {
 	/**

@@ -153,7 +153,7 @@ public abstract class HarnessTestBase
 					Arrays.asList(srcDir.toFile()));
 
 			fileManager.setLocation(StandardLocation.CLASS_PATH,
-					Arrays.asList(new File("bin/main/java")));
+					Arrays.asList(new File("bin/ifc/java")));
 
 			return srcDir;
 		}
