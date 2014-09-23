@@ -14,14 +14,13 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mpdeimos.chacy.Chacy;
-import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.Config;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.model.deviant.TypeDeviant;
+import com.mpdeimos.chacy.parser.TypeParser;
 import com.mpdeimos.chacy.transform.Transformator;
 import com.mpdeimos.chacy.util.JavaUtil;
-import com.mpdeimos.chacy.view.TypeWriter;
+import com.mpdeimos.chacy.view.FileWriter;
 
 /**
  * Annotation processor that processes all types annotated with
@@ -66,28 +65,7 @@ public class ChacyProcessor extends AbstractProcessor
 	/** Parses the Java Type from the type element. */
 	private Type parseType(Element element)
 	{
-		String namespace = element.getEnclosingElement().getSimpleName()
-				.toString();
-		if (namespace.isEmpty())
-		{
-			namespace = null;
-		}
-
-		String name = element.getSimpleName().toString();
-		Type type = new Type(namespace, name);
-
-		Chacy.Type typeAnnotation = element.getAnnotation(Chacy.Type.class);
-		type.getSupportedLanguages().setLanguages(typeAnnotation.lang());
-
-		Chacy.Ignore ignoreAnnotation = element
-				.getAnnotation(Chacy.Ignore.class);
-		if (ignoreAnnotation != null)
-		{
-			type.getSupportedLanguages().removeLanguages(
-					ignoreAnnotation.lang());
-		}
-
-		return type;
+		return TypeParser.get().parse(element);
 	}
 
 	/**
@@ -116,6 +94,9 @@ public class ChacyProcessor extends AbstractProcessor
 	/** Writes the transformed types to files. */
 	private void writeTypes(Map<Language, TypeDeviant[]> transformedTypes)
 	{
+		// transformedTypes.values().stream().flatMap(Arrays::stream)
+		// .forEach(this::writeType);
+
 		for (TypeDeviant[] types : transformedTypes.values())
 		{
 			for (TypeDeviant type : types)
@@ -130,7 +111,7 @@ public class ChacyProcessor extends AbstractProcessor
 	{
 		try
 		{
-			TypeWriter writer = new TypeWriter(this.processingEnv.getFiler(),
+			FileWriter writer = new FileWriter(this.processingEnv.getFiler(),
 					type);
 			writer.write();
 		}

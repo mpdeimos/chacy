@@ -19,7 +19,7 @@ public class JavaUtil
 			return null;
 		}
 
-		return StringUtil.join(NAMESPACE_SEPARATOR, parts);
+		return StringUtil.join(NAMESPACE_SEPARATOR, (Object[]) parts);
 	}
 
 	/** Splits a java namespace into its parts. */

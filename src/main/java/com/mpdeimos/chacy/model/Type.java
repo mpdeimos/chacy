@@ -11,11 +11,14 @@ public class Type extends Element
 	/** The name of the type. */
 	protected String name;
 
+	protected TypeKind kind;
+
 	/** Constructor. */
-	public Type(String namespace, String name)
+	public Type(String namespace, String name, TypeKind kind)
 	{
 		this.namespaceParts = JavaUtil.splitNamespace(namespace);
 		this.name = name;
+		this.kind = kind;
 	}
 
 	/** Copy constructor. */
@@ -23,6 +26,7 @@ public class Type extends Element
 	{
 		this.namespaceParts = origin.namespaceParts;
 		this.name = origin.name;
+		this.kind = origin.kind;
 	}
 
 	/** @see #namespace */
@@ -41,5 +45,10 @@ public class Type extends Element
 	public String getQualifiedName()
 	{
 		return JavaUtil.getNamespace(getNamespace(), getName());
+	}
+
+	public TypeKind getKind()
+	{
+		return kind;
 	}
 }

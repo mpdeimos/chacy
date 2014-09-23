@@ -13,6 +13,7 @@ import com.mpdeimos.chacy.transform.vala.ValaTransformator;
  * Interface for transforming a type into a type of another programming
  * language.
  */
+@FunctionalInterface
 public interface Transformator
 {
 	/** Transforms the type with the given configuration. */

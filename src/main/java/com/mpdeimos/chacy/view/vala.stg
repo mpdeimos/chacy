@@ -1,0 +1,4 @@
+delimiters "<", ">"
+
+import "nolang/clike.stg"
+import "vala"
