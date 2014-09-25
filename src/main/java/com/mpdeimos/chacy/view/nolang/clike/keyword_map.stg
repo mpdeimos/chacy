@@ -1,12 +1,13 @@
-delimiters "<", ">"
-
-import "nolang/clike.stg"
-import "csharp"
+EType ::= [
+	"CLASS":"class",
+	"INTERFACE":"interface",
+	default:"<unknown-type>"
+]
 
 EVisibility ::= [
 	"PUBLIC":"public",
 	"PROTECTED":"protected",
-	"PACKAGE_PRIVATE":"internal",
+	"PACKAGE_PRIVATE":"public",
 	"PRIVATE":"private",
 	default:"<unknown-visibility>"
 ]

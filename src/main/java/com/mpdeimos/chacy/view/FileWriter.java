@@ -72,7 +72,7 @@ public class FileWriter
 			tpl.add("type", this.type); //$NON-NLS-1$
 			tpl.write(new AutoIndentWriter(writer));
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			// Seems like STG has some NPEs dangling if something does not
 			// compile, catch Exception.

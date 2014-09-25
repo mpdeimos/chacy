@@ -11,7 +11,7 @@ public class EnumRenderer extends StringRenderer
 	{
 		if (o instanceof Enum)
 		{
-			o = ((Enum<?>) o).name().toLowerCase();
+			o = ((Enum<?>) o).name();
 		}
 		return super.toString(o, formatString, locale);
 	}
