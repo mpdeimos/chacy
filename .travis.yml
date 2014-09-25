@@ -7,5 +7,5 @@ script: ant test publish
 notifications:
   email:
     recipients:
-      - secure: W/lA3oQfMGFSHwbgR7e9sQ+0z6nXUJR9oGnefjUG7Vu2z5Wnsz0lcXN+A0soAFbm7CzrHMK4sY5V8oiqTl+cZTaULe2FjdFEQo7CffNNMwxtefIgrnpYPW5+6O9SYwja9qyHWeYQ2Kk62qiySbf2DkleBYhjzcmgcNFO4xKXa+k=
+      - secure: "Lb048X11WIBVwRjvDkxz2Zv9Apqb1j5ZfBKDCDN9U1resiTaN5HWpxR4DUWWxLS2DTnIPwJCM8sD8OX812Bk3je5AxXZFEqW//z/2TiOO/VIJ1Bwd5ll1EFyA1rPuns93opv0Q3LiOlNIXFyILJ72kyCWZdkGuQV22YqFEmxj5c="
     on_success: always
