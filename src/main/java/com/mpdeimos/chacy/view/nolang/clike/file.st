@@ -2,9 +2,9 @@ file(type) ::= <<
 <if(type.namespace)>
 namespace <type.namespace>
 {
-	<(EType.(type.kind))(type)>
+	<type(type)>
 }
 <else>
-<(EType.(type.kind))(type)>
+<type(type)>
 <endif>
 >>

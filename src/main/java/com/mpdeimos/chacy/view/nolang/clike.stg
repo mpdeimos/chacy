@@ -1,2 +1,1 @@
-import "clike/keyword_map.stg"
 import "clike"

@@ -2,11 +2,3 @@ delimiters "<", ">"
 
 import "nolang/clike.stg"
 import "csharp"
-
-EVisibility ::= [
-	"PUBLIC":"public",
-	"PROTECTED":"protected",
-	"PACKAGE_PRIVATE":"internal",
-	"PRIVATE":"private",
-	default:"<unknown-visibility>"
-]

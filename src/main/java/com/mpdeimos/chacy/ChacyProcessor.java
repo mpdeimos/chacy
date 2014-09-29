@@ -32,6 +32,7 @@ public class ChacyProcessor extends AbstractProcessor
 	/** The global configuration. */
 	private final Config config = new Config();
 
+	/** {@inheritDoc} */
 	@Override
 	public SourceVersion getSupportedSourceVersion()
 	{

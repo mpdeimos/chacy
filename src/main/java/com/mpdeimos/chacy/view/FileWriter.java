@@ -1,5 +1,10 @@
 package com.mpdeimos.chacy.view;
 
+import com.mpdeimos.chacy.Language;
+import com.mpdeimos.chacy.model.deviant.TypeDeviant;
+import com.mpdeimos.chacy.util.JavaUtil;
+import com.mpdeimos.chacy.util.StringUtil;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
@@ -15,11 +20,6 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.misc.ErrorBuffer;
-
-import com.mpdeimos.chacy.Language;
-import com.mpdeimos.chacy.model.deviant.TypeDeviant;
-import com.mpdeimos.chacy.util.JavaUtil;
-import com.mpdeimos.chacy.util.StringUtil;
 
 /** Writes a type to a {@link ST} template. */
 public class FileWriter
@@ -40,6 +40,13 @@ public class FileWriter
 
 	/** Map for caching template groups per language. */
 	private final Map<Language, STGroup> groupCache = new HashMap<>();
+
+	/** Static constructor. */
+	static
+	{
+		// TODO Use env var
+		STGroup.verbose = true;
+	}
 
 	/** Constructor. */
 	public FileWriter(Filer filer, TypeDeviant type)
@@ -105,10 +112,10 @@ public class FileWriter
 	 *         cached.
 	 */
 	private STGroup getTemplateGroup(Language language, ErrorBuffer listener)
-			throws IOException
 	{
+		// TODO USE CACHE
 		URL tplDir = this.getClass().getResource(
-				language.name().toLowerCase() + ".stg");
+				language.name().toLowerCase() + STGroup.GROUP_FILE_EXTENSION);
 
 		STGroup tplGroup = new STGroupFile(tplDir, ST_ENCODING,
 				ST_DELIMITER_START_CHAR, ST_DELIMITER_STOP_CHAR);
@@ -116,7 +123,7 @@ public class FileWriter
 		tplGroup.registerRenderer(Enum.class, new EnumRenderer());
 		tplGroup.setListener(listener);
 
-		groupCache.put(language, tplGroup);
+		this.groupCache.put(language, tplGroup);
 
 		return tplGroup;
 	}
