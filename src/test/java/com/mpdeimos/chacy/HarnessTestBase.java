@@ -1,5 +1,7 @@
 package com.mpdeimos.chacy;
 
+import com.mpdeimos.chacy.util.FileUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,8 +26,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
-import com.mpdeimos.chacy.util.FileUtil;
-
 /** Base class for Harness tests. */
 public abstract class HarnessTestBase
 {
@@ -43,8 +43,7 @@ public abstract class HarnessTestBase
 	/** @return the ouput directory of the test. */
 	private Path getTestOutput()
 	{
-		return Paths.get(
-				"test-tmp", //$NON-NLS-1$
+		return Paths.get("test-tmp", //$NON-NLS-1$
 				this.getClass().getCanonicalName(),
 				this.testName.getMethodName());
 	}
@@ -234,8 +233,9 @@ public abstract class HarnessTestBase
 				actualFiles.remove(actual);
 			}
 
-			Assert.assertEquals("Encountered unespected generated files.", //$NON-NLS-1$
-					Collections.<Path> emptySet(), actualFiles);
+			Assert.assertEquals("Encountered unexpected generated files.", //$NON-NLS-1$
+					Collections.<Path> emptySet(),
+					actualFiles);
 		}
 	}
 }

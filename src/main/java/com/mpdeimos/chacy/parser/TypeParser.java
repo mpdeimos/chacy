@@ -1,22 +1,26 @@
 package com.mpdeimos.chacy.parser;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-
 import com.mpdeimos.chacy.Chacy;
+import com.mpdeimos.chacy.ChacyException;
+import com.mpdeimos.chacy.model.ETypeKind;
 import com.mpdeimos.chacy.model.Type;
-import com.mpdeimos.chacy.model.EType;
 
+import javax.lang.model.element.Element;
+
+/** Parses Java types from the javax implementation to Chacy model objects. */
 public interface TypeParser extends Parser<Element, Type>
 {
+	/** @return A type parser instance. */
 	public static TypeParser get()
 	{
 		return Implementation::parse;
 	}
 
+	/** Actual implementation of a type parser. */
 	public static class Implementation
 	{
-		private static Type parse(Element element)
+		/** Static implementation of {@link TypeParser} signature. */
+		private static Type parse(Element element) throws ChacyException
 		{
 			String namespace = element.getEnclosingElement().getSimpleName()
 					.toString();
@@ -26,10 +30,18 @@ public interface TypeParser extends Parser<Element, Type>
 			}
 
 			String name = element.getSimpleName().toString();
-			Type type = new Type(namespace, name,
-					element.getKind() == ElementKind.CLASS ? EType.CLASS
-							: EType.INTERFACE);
 
+			Type type = new Type(namespace, name,
+					getTypeKind(element));
+
+			parseSupportedLanguages(element, type);
+
+			return type;
+		}
+
+		/** Parses the supported languages for the type. */
+		private static void parseSupportedLanguages(Element element, Type type)
+		{
 			Chacy.Type typeAnnotation = element.getAnnotation(Chacy.Type.class);
 			type.getSupportedLanguages().setLanguages(typeAnnotation.lang());
 
@@ -40,8 +52,25 @@ public interface TypeParser extends Parser<Element, Type>
 				type.getSupportedLanguages().removeLanguages(
 						ignoreAnnotation.lang());
 			}
+		}
 
-			return type;
+		/** @return the {@link ETypeKind} of the element. */
+		private static ETypeKind getTypeKind(Element element)
+				throws ChacyException
+		{
+			switch (element.getKind())
+			{
+			case CLASS:
+				return ETypeKind.CLASS;
+			case INTERFACE:
+				return ETypeKind.INTERFACE;
+			case ENUM:
+				return ETypeKind.ENUM;
+			default:
+				throw new ChacyException("Unsupported element kind "
+						+ element.getKind() + " for element "
+						+ element.getSimpleName());
+			}
 		}
 	}
 }

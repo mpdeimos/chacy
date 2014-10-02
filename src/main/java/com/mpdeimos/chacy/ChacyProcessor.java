@@ -1,5 +1,13 @@
 package com.mpdeimos.chacy;
 
+import com.mpdeimos.chacy.config.Config;
+import com.mpdeimos.chacy.model.Type;
+import com.mpdeimos.chacy.model.deviant.TypeDeviant;
+import com.mpdeimos.chacy.parser.TypeParser;
+import com.mpdeimos.chacy.transform.Transformator;
+import com.mpdeimos.chacy.util.JavaUtil;
+import com.mpdeimos.chacy.view.FileWriter;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,14 +21,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-
-import com.mpdeimos.chacy.config.Config;
-import com.mpdeimos.chacy.model.Type;
-import com.mpdeimos.chacy.model.deviant.TypeDeviant;
-import com.mpdeimos.chacy.parser.TypeParser;
-import com.mpdeimos.chacy.transform.Transformator;
-import com.mpdeimos.chacy.util.JavaUtil;
-import com.mpdeimos.chacy.view.FileWriter;
 
 /**
  * Annotation processor that processes all types annotated with
@@ -54,17 +54,24 @@ public class ChacyProcessor extends AbstractProcessor
 		for (Element element : roundEnv
 				.getElementsAnnotatedWith(Chacy.Type.class))
 		{
-			// TODO (MP) Check whether the parent is a package and not another
-			// type.
-			Type type = parseType(element);
-			Map<Language, TypeDeviant[]> convertedTypes = transformType(type);
-			writeTypes(convertedTypes);
+			try
+			{
+				// TODO (MP) Check whether the parent is a package and not
+				// another type.
+				Type type = parseType(element);
+				Map<Language, TypeDeviant[]> convertedTypes = transformType(type);
+				writeTypes(convertedTypes);
+			}
+			catch (ChacyException e)
+			{
+				printError(e.getMessage());
+			}
 		}
 		return true;
 	}
 
 	/** Parses the Java Type from the type element. */
-	private Type parseType(Element element)
+	private Type parseType(Element element) throws ChacyException
 	{
 		return TypeParser.get().parse(element);
 	}
@@ -95,9 +102,6 @@ public class ChacyProcessor extends AbstractProcessor
 	/** Writes the transformed types to files. */
 	private void writeTypes(Map<Language, TypeDeviant[]> transformedTypes)
 	{
-		// transformedTypes.values().stream().flatMap(Arrays::stream)
-		// .forEach(this::writeType);
-
 		for (TypeDeviant[] types : transformedTypes.values())
 		{
 			for (TypeDeviant type : types)
@@ -118,15 +122,21 @@ public class ChacyProcessor extends AbstractProcessor
 		}
 		catch (IOException e)
 		{
-			this.processingEnv.getMessager().printMessage(
-					Diagnostic.Kind.ERROR,
-					"Could not convert class " //$NON-NLS-1$
-							+ JavaUtil.getNamespace(type.getName(),
-									type.getNamespace())
-							+ " to language " //$NON-NLS-1$
-							+ type.getDeviantInfo().getLanguage()
-									.getSpokenName() + ": " //$NON-NLS-1$
-							+ e.getMessage());
+			printError("Could not convert class " //$NON-NLS-1$
+					+ JavaUtil.getNamespace(type.getName(),
+							type.getNamespace())
+					+ " to language " //$NON-NLS-1$
+					+ type.getDeviantInfo().getLanguage()
+							.getSpokenName() + ": " //$NON-NLS-1$
+					+ e.getMessage());
 		}
+	}
+
+	/** Prints the given error message to the processing environment. */
+	private void printError(String message)
+	{
+		this.processingEnv.getMessager().printMessage(
+				Diagnostic.Kind.ERROR,
+				message);
 	}
 }

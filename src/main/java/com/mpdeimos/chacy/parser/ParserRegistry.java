@@ -1,11 +1,11 @@
 package com.mpdeimos.chacy.parser;
 
+import com.mpdeimos.chacy.model.Type;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.lang.model.element.Element;
-
-import com.mpdeimos.chacy.model.Type;
 
 /** Registry of language element parsers. */
 public class ParserRegistry
@@ -23,11 +23,11 @@ public class ParserRegistry
 	private <E, R> void add(Class<E> element, Class<R> result,
 			Parser<E, R> parser)
 	{
-		Map<Class<?>, Parser<?, ?>> parsersForResult = parsers.get(result);
+		Map<Class<?>, Parser<?, ?>> parsersForResult = this.parsers.get(result);
 		if (parsersForResult == null)
 		{
 			parsersForResult = new HashMap<>();
-			parsers.put(result, parsersForResult);
+			this.parsers.put(result, parsersForResult);
 		}
 
 		parsersForResult.put(element, parser);
@@ -37,7 +37,7 @@ public class ParserRegistry
 	@SuppressWarnings("unchecked")
 	public <E, R> Parser<E, R> get(E element, Class<? extends R> result)
 	{
-		Map<Class<?>, Parser<?, ?>> parsersForResult = parsers.get(result);
+		Map<Class<?>, Parser<?, ?>> parsersForResult = this.parsers.get(result);
 		if (parsersForResult == null)
 		{
 			return null;
