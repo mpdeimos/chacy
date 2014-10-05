@@ -42,4 +42,16 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	{
 		return this.deviantInfo.getLanguage().getExtension();
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getName()
+	{
+		String name = this.renameRules.get(this.deviantInfo.getLanguage());
+		if (name != null)
+		{
+			return name;
+		}
+		return super.getName();
+	}
 }

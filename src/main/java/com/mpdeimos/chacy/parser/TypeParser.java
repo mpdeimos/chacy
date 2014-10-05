@@ -35,6 +35,7 @@ public interface TypeParser extends Parser<Element, Type>
 					getTypeKind(element));
 
 			parseSupportedLanguages(element, type);
+			parseRenameRules(element, type);
 
 			return type;
 		}
@@ -51,6 +52,21 @@ public interface TypeParser extends Parser<Element, Type>
 			{
 				type.getSupportedLanguages().removeLanguages(
 						ignoreAnnotation.lang());
+			}
+		}
+
+		/** Parses the rename rules for the type. */
+		private static void parseRenameRules(Element element, Type type)
+		{
+			Chacy.Name nameAnnotation = element.getAnnotation(Chacy.Name.class);
+			if (nameAnnotation == null)
+			{
+				return;
+			}
+
+			for (Chacy.Value rule : nameAnnotation.value())
+			{
+				type.addRenameRule(rule.value(), rule.lang());
 			}
 		}
 

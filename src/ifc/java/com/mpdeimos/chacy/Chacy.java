@@ -19,21 +19,6 @@ public final class Chacy
 		Language[] lang() default {};
 	}
 
-	/** Allows to rename a type, method, field, etc. */
-	@Target({ ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD,
-			ElementType.METHOD, ElementType.LOCAL_VARIABLE })
-	public @interface Name
-	{
-		/** The new name of the element. */
-		String value();
-
-		/**
-		 * The languages the rename applies to. Leave empty for all configured
-		 * languages.
-		 */
-		Language[] lang() default {};
-	}
-
 	/** Allows to ignore an element for the given languages. */
 	@Target({ ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD,
 			ElementType.METHOD })
@@ -44,5 +29,28 @@ public final class Chacy
 		 * languages.
 		 */
 		Language[] lang() default {};
+	}
+
+	/** Allows to rename a type, method, field, etc. */
+	@Target({ ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD,
+			ElementType.METHOD, ElementType.LOCAL_VARIABLE })
+	public @interface Name
+	{
+		/** Reference to a language bound value. */
+		Value[] value();
+	}
+
+	/** A language bound value. */
+	@Target(ElementType.ANNOTATION_TYPE)
+	public @interface Value
+	{
+		/**
+		 * The languages the value applies to. Leave empty for all configured
+		 * languages.
+		 */
+		Language[] lang() default {};
+
+		/** The value bound for the language. */
+		String value();
 	}
 }
