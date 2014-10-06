@@ -64,10 +64,7 @@ public interface TypeParser extends Parser<Element, Type>
 				return;
 			}
 
-			for (Chacy.Value rule : nameAnnotation.value())
-			{
-				type.addRenameRule(rule.value(), rule.lang());
-			}
+			type.getRenameRules().set(nameAnnotation.value());
 		}
 
 		/** @return the {@link ETypeKind} of the element. */

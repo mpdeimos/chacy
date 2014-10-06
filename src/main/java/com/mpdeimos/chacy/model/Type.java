@@ -1,10 +1,7 @@
 package com.mpdeimos.chacy.model;
 
-import com.mpdeimos.chacy.Language;
+import com.mpdeimos.chacy.config.LanguageValue;
 import com.mpdeimos.chacy.util.JavaUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /** Represents a type extracted from Java, e.g. a class, interface, etc. */
 public class Type extends Element
@@ -19,7 +16,7 @@ public class Type extends Element
 	protected ETypeKind kind;
 
 	/** Map of rename rules. */
-	protected Map<Language, String> renameRules = new HashMap<>();
+	protected LanguageValue renameRules = new LanguageValue();
 
 	/** Constructor. */
 	public Type(String namespace, String name, ETypeKind kind)
@@ -62,25 +59,9 @@ public class Type extends Element
 		return this.kind;
 	}
 
-	/**
-	 * Sets the name for the given languages. If no language is specified, all
-	 * languages that have no explicit name set will be renamed to the given
-	 * name.
-	 */
-	public void addRenameRule(String name, Language... languages)
+	/** @see #renameRules */
+	public LanguageValue getRenameRules()
 	{
-		if (languages.length == 0)
-		{
-			for (Language language : Language.values())
-			{
-				this.renameRules.putIfAbsent(language, name);
-			}
-			return;
-		}
-
-		for (Language language : languages)
-		{
-			this.renameRules.put(language, name);
-		}
+		return this.renameRules;
 	}
 }
