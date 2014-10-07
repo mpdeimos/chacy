@@ -100,8 +100,20 @@ public abstract class HarnessTestBase
 			Iterable<? extends JavaFileObject> compilationUnits = getCompilationUnits(
 					fileManager, filenames);
 
-			CompilationTask task = compiler.getTask(null, fileManager, null,
-					null, null, compilationUnits);
+			List<String> options = null;
+			if (Boolean.parseBoolean(System.getProperty(ChacyProcessor.DEBUG_TEMPLATE)))
+			{
+				options = Arrays.asList(String.format("-A%s=true", //$NON-NLS-1$
+						ChacyProcessor.DEBUG_TEMPLATE));
+			}
+
+			CompilationTask task = compiler.getTask(
+					null,
+					fileManager,
+					null,
+					options,
+					null,
+					compilationUnits);
 
 			task.setProcessors(Arrays.asList(this.processor));
 
@@ -115,11 +127,11 @@ public abstract class HarnessTestBase
 		{
 			if (filenames.length == 0)
 			{
-				filenames = new String[] { "**" };
+				filenames = new String[] { "**" }; //$NON-NLS-1$
 			}
 
 			List<Path> paths = FileUtil.listFiles(
-					Paths.get(HARNESS_DATA, this.harness, "src"), filenames);
+					Paths.get(HARNESS_DATA, this.harness, "src"), filenames); //$NON-NLS-1$
 
 			List<JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>();
 			for (Path path : paths)
@@ -151,7 +163,7 @@ public abstract class HarnessTestBase
 					Arrays.asList(srcDir.toFile()));
 
 			fileManager.setLocation(StandardLocation.CLASS_PATH,
-					Arrays.asList(new File("bin/ifc/java")));
+					Arrays.asList(new File("bin/ifc/java"))); //$NON-NLS-1$
 
 			return srcDir;
 		}

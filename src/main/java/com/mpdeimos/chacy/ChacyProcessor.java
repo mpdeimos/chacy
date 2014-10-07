@@ -17,6 +17,7 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -27,8 +28,12 @@ import javax.tools.Diagnostic;
  * {@link Chacy.Type}.
  */
 @SupportedAnnotationTypes("com.mpdeimos.chacy.Chacy.Type")
+@SupportedOptions(ChacyProcessor.DEBUG_TEMPLATE)
 public class ChacyProcessor extends AbstractProcessor
 {
+	/** Config flag to enable debug output for ST4. */
+	public static final String DEBUG_TEMPLATE = "chacy.debug.tpl"; //$NON-NLS-1$
+
 	/** The global configuration. */
 	private final Config config = new Config();
 
@@ -44,6 +49,11 @@ public class ChacyProcessor extends AbstractProcessor
 	public synchronized void init(ProcessingEnvironment processingEnv)
 	{
 		super.init(processingEnv);
+
+		if (Boolean.parseBoolean(processingEnv.getOptions().get(DEBUG_TEMPLATE)))
+		{
+			FileWriter.enableDebugOutput();
+		}
 	}
 
 	/** {@inheritDoc} */

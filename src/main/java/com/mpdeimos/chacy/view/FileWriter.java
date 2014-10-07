@@ -41,13 +41,6 @@ public class FileWriter
 	/** Map for caching template groups per language. */
 	private final Map<Language, STGroup> groupCache = new HashMap<>();
 
-	/** Static constructor. */
-	static
-	{
-		// TODO Use env var
-		STGroup.verbose = true;
-	}
-
 	/** Constructor. */
 	public FileWriter(Filer filer, TypeDeviant type)
 	{
@@ -139,5 +132,11 @@ public class FileWriter
 
 			throw new IOException(message);
 		}
+	}
+
+	/** Enables String template debug output. */
+	public static void enableDebugOutput()
+	{
+		STGroup.verbose = true;
 	}
 }
