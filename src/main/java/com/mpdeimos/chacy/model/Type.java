@@ -18,12 +18,20 @@ public class Type extends Element
 	/** Map of rename rules. */
 	protected LanguageValue renameRules = new LanguageValue();
 
+	/** The visibility of the type. */
+	protected EVisibility visibility;
+
 	/** Constructor. */
-	public Type(String namespace, String name, ETypeKind kind)
+	public Type(
+			String namespace,
+			String name,
+			ETypeKind kind,
+			EVisibility visibility)
 	{
 		this.namespaceParts = JavaUtil.splitNamespace(namespace);
 		this.name = name;
 		this.kind = kind;
+		this.visibility = visibility;
 	}
 
 	/** Copy constructor. */
@@ -33,6 +41,7 @@ public class Type extends Element
 		this.name = origin.name;
 		this.kind = origin.kind;
 		this.renameRules = origin.renameRules;
+		this.visibility = origin.visibility;
 	}
 
 	/** @see #namespace */

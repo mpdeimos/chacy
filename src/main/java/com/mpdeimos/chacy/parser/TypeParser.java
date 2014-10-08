@@ -3,6 +3,7 @@ package com.mpdeimos.chacy.parser;
 import com.mpdeimos.chacy.Chacy;
 import com.mpdeimos.chacy.ChacyException;
 import com.mpdeimos.chacy.model.ETypeKind;
+import com.mpdeimos.chacy.model.EVisibility;
 import com.mpdeimos.chacy.model.Type;
 
 import javax.lang.model.element.Element;
@@ -31,8 +32,11 @@ public interface TypeParser extends Parser<Element, Type>
 
 			String name = element.getSimpleName().toString();
 
-			Type type = new Type(namespace, name,
-					getTypeKind(element));
+			Type type = new Type(
+					namespace,
+					name,
+					getTypeKind(element),
+					EVisibility.fromModifier(element.getModifiers()));
 
 			parseSupportedLanguages(element, type);
 			parseRenameRules(element, type);
