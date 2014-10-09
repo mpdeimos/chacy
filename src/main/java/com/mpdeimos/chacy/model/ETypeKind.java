@@ -6,11 +6,27 @@ package com.mpdeimos.chacy.model;
 public enum ETypeKind
 {
 	/** A normal class. */
-	CLASS,
+	CLASS("class"), //$NON-NLS-1$
 
 	/** An interface type. */
-	INTERFACE,
+	INTERFACE("interface"), //$NON-NLS-1$
 
 	/** An enumeration type. */
-	ENUM;
+	ENUM("enum"); //$NON-NLS-1$
+
+	/** The default display name for the type. */
+	private final String name;
+
+	/** Constructor. */
+	private ETypeKind(String name)
+	{
+		this.name = name;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String toString()
+	{
+		return this.name;
+	}
 }

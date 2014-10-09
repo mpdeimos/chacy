@@ -1,5 +1,6 @@
 package com.mpdeimos.chacy.config;
 
+import com.mpdeimos.chacy.Chacy.Ignore;
 import com.mpdeimos.chacy.Language;
 
 import java.util.Arrays;
@@ -59,5 +60,19 @@ public class LanguageSupport
 	public void removeLanguages(Language... languages)
 	{
 		this.supported.removeAll(Arrays.asList(languages));
+	}
+
+	/**
+	 * Removes all languages described by the ignore annotation. If the
+	 * annotation does not define any languages all languages are excluded.
+	 */
+	public void removeLanguages(Ignore ignoreAnnotation)
+	{
+		Language[] languages = ignoreAnnotation.lang();
+		if (languages.length == 0)
+		{
+			languages = Language.values();
+		}
+		removeLanguages(languages);
 	}
 }

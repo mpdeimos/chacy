@@ -12,7 +12,19 @@ import java.util.Optional;
 public class LanguageValue
 {
 	/** Map of languages to values. */
-	private final Map<Language, String> values = new HashMap<>();
+	private final Map<Language, String> values;
+
+	/** Constructor. */
+	public LanguageValue()
+	{
+		this.values = new HashMap<>();
+	}
+
+	/** Constructor. */
+	public LanguageValue(LanguageValue renameRules)
+	{
+		this.values = new HashMap<>(renameRules.values);
+	}
 
 	/**
 	 * Sets the value for the given languages. If no language is specified, all

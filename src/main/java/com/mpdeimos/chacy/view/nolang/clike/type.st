@@ -1,5 +1,5 @@
 type(type) ::= <<
-<type.modifiers> <type.kind; format="lower"> <type.name>
+<type.modifiers; separator=" "> <type.kind; format="lower"> <type.name>
 {
 }
 >>

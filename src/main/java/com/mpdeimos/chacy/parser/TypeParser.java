@@ -2,6 +2,7 @@ package com.mpdeimos.chacy.parser;
 
 import com.mpdeimos.chacy.Chacy;
 import com.mpdeimos.chacy.ChacyException;
+import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.ETypeKind;
 import com.mpdeimos.chacy.model.EVisibility;
 import com.mpdeimos.chacy.model.Type;
@@ -36,7 +37,8 @@ public interface TypeParser extends Parser<Element, Type>
 					namespace,
 					name,
 					getTypeKind(element),
-					EVisibility.fromModifier(element.getModifiers()));
+					EVisibility.fromModifiers(element.getModifiers()),
+					EModifier.fromModifiers(element.getModifiers()));
 
 			parseSupportedLanguages(element, type);
 			parseRenameRules(element, type);
@@ -54,8 +56,7 @@ public interface TypeParser extends Parser<Element, Type>
 					.getAnnotation(Chacy.Ignore.class);
 			if (ignoreAnnotation != null)
 			{
-				type.getSupportedLanguages().removeLanguages(
-						ignoreAnnotation.lang());
+				type.getSupportedLanguages().removeLanguages(ignoreAnnotation);
 			}
 		}
 

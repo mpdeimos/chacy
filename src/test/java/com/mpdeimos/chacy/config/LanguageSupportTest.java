@@ -1,7 +1,9 @@
 package com.mpdeimos.chacy.config;
 
+import com.mpdeimos.chacy.Chacy;
 import com.mpdeimos.chacy.Language;
 
+import java.lang.annotation.Annotation;
 import java.util.EnumSet;
 
 import org.hamcrest.CoreMatchers;
@@ -64,6 +66,32 @@ public class LanguageSupportTest
 
 		languageSupport = new LanguageSupport();
 		languageSupport.removeLanguages(Language.CSHARP, Language.VALA);
+		assertContainsOnly(languageSupport, EnumSet.noneOf(Language.class));
+	}
+
+	/**
+	 * Tests
+	 * {@link LanguageSupport#removeLanguages(com.mpdeimos.chacy.Chacy.Ignore)}
+	 */
+	public void testRemoveAllLanguages()
+	{
+		LanguageSupport languageSupport = new LanguageSupport();
+
+		languageSupport.removeLanguages(new Chacy.Ignore()
+		{
+			@Override
+			public Class<? extends Annotation> annotationType()
+			{
+				return null;
+			}
+
+			@Override
+			public Language[] lang()
+			{
+				return new Language[] {};
+			}
+		});
+
 		assertContainsOnly(languageSupport, EnumSet.noneOf(Language.class));
 	}
 

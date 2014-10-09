@@ -9,13 +9,13 @@ import javax.lang.model.element.Modifier;
  */
 public enum EVisibility
 {
-	PUBLIC("public"),
+	PUBLIC("public"), //$NON-NLS-1$
 
-	PROTECTED("protected"),
+	PROTECTED("protected"), //$NON-NLS-1$
 
 	PACKAGE_PRIVATE(null),
 
-	PRIVATE("private");
+	PRIVATE("private"); //$NON-NLS-1$
 
 	private final String name;
 
@@ -25,7 +25,7 @@ public enum EVisibility
 		this.name = name;
 	}
 
-	public static EVisibility fromModifier(Set<Modifier> modifiers)
+	public static EVisibility fromModifiers(Set<Modifier> modifiers)
 	{
 		if (modifiers.contains(Modifier.PUBLIC))
 		{

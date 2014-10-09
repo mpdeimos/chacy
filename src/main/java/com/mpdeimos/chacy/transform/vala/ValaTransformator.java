@@ -2,10 +2,13 @@ package com.mpdeimos.chacy.transform.vala;
 
 import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.Config;
+import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.EVisibility;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.model.deviant.TypeDeviant;
 import com.mpdeimos.chacy.transform.Transformator;
+
+import java.util.List;
 
 /**
  * Interface for transforming a {@link Type} to a {@link Language#VALA}.
@@ -27,6 +30,14 @@ public class ValaTransformator implements Transformator
 				}
 
 				return super.getVisibility();
+			}
+
+			@Override
+			public List<String> getModifiers()
+			{
+				// there is no final in Vala.
+				this.modifiers.remove(EModifier.FINAL);
+				return super.getModifiers();
 			}
 		} };
 	}

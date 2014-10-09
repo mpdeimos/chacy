@@ -1,11 +1,13 @@
 package com.mpdeimos.chacy.model.deviant;
 
 import com.mpdeimos.chacy.Language;
+import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.util.FileUtil;
 import com.mpdeimos.chacy.util.StringUtil;
 
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Deviant of a {@link Type} for a given language. */
 public class TypeDeviant extends Type implements Deviant<Type>
@@ -60,14 +62,19 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	}
 
 	/** Returns the modifiers of the deviant type. */
-	public TreeSet<String> getModifiers()
+	public List<String> getModifiers()
 	{
-		TreeSet<String> modifiers = new TreeSet<>();
+		List<String> modifiers = new ArrayList<>();
 
 		String visibility = this.getVisibility();
 		if (!StringUtil.isNullOrEmpty(visibility))
 		{
 			modifiers.add(visibility);
+		}
+
+		for (EModifier modifier : this.modifiers)
+		{
+			modifiers.add(modifier.toString());
 		}
 
 		return modifiers;
