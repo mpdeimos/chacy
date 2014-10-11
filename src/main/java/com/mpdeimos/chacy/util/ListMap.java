@@ -13,7 +13,7 @@ public class ListMap<K, V> extends HashMap<K, List<V>>
 	 * Adds a value to the list for the given key. The list is created if it
 	 * does not exist.
 	 */
-	public void add(K key, V value)
+	public void addToList(K key, V value)
 	{
 		List<V> list = get(key);
 		if (list == null)
@@ -23,5 +23,17 @@ public class ListMap<K, V> extends HashMap<K, List<V>>
 		}
 
 		list.add(value);
+	}
+
+	/**
+	 * removes a value from the list for the given key.
+	 */
+	public void removeFromList(K key, V value)
+	{
+		List<V> list = get(key);
+		if (list != null)
+		{
+			list.remove(value);
+		}
 	}
 }
