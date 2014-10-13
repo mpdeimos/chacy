@@ -22,7 +22,7 @@ public class ModifierCollectionTest
 		modifiers.addModifiers(Language.VALA, "-bar"); //$NON-NLS-1$
 
 		Assert.assertEquals(
-				Arrays.asList("foo", "bar"), modifiers.getModifiers(Language.CSHARP)); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				Arrays.asList("foo", "bar"), modifiers.getModifiers(Language.CSHARP)); //$NON-NLS-1$//$NON-NLS-2$
 		Assert.assertEquals(
 				Arrays.asList("foo"), modifiers.getModifiers(Language.VALA)); //$NON-NLS-1$
 	}
@@ -41,7 +41,7 @@ public class ModifierCollectionTest
 		Assert.assertEquals(
 				Arrays.asList("foo", "bar", "baz", "boo"), modifiers.getModifiers(Language.CSHARP)); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Assert.assertEquals(
-				Arrays.asList("foo", "bar"), modifiers.getModifiers(Language.VALA)); //$NON-NLS-1$
+				Arrays.asList("foo", "bar"), modifiers.getModifiers(Language.VALA)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
