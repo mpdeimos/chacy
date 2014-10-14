@@ -5,7 +5,9 @@ import com.mpdeimos.chacy.util.ListMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Collection of modifiers. Supports modification for single languages.
@@ -24,9 +26,22 @@ public class ModifierCollection
 	 */
 	private final ListMap<Language, String> languageModifiers = new ListMap<>();
 
+	/**
+	 * Map that registers rules for substituting Java visibility by a language
+	 * specific visibility. The keys for this have to e created by
+	 * {@link #getLanguageVisibilityKey(Language, EVisibility)}.
+	 */
+	private final Map<String, String> languageVisibility = new HashMap<>();
+
+	/** The original visibility of the Java class. */
+	private final EVisibility originalVisibility;
+
 	/** Constructor. */
-	public ModifierCollection(Collection<String> modifiers)
+	public ModifierCollection(
+			EVisibility visibilty,
+			Collection<String> modifiers)
 	{
+		this.originalVisibility = visibilty;
 		this.originalModifiers = new ArrayList<>(modifiers);
 	}
 
@@ -45,7 +60,9 @@ public class ModifierCollection
 	/** @return The modifiers for the given language . */
 	public List<String> getModifiers(Language language)
 	{
-		List<String> modifiers = new ArrayList<>(this.originalModifiers);
+		List<String> modifiers = new ArrayList<>();
+		modifiers.add(this.getVisibility(language));
+		modifiers.addAll(this.originalModifiers);
 
 		List<String> languageModifiers = this.languageModifiers.get(language);
 		if (languageModifiers != null)
@@ -65,4 +82,34 @@ public class ModifierCollection
 
 		return modifiers;
 	}
+
+	/** @return The visibility string for the given language. */
+	private String getVisibility(Language language)
+	{
+		String visibility = this.languageVisibility.get(getLanguageVisibilityKey(
+				language,
+				this.originalVisibility));
+		if (visibility != null)
+		{
+			return visibility;
+		}
+		return this.originalVisibility.toString();
+	}
+
+	/** Sets the visibility for the given language. */
+	public void setVisibility(Language language, String visibility)
+	{
+		this.languageVisibility.put(getLanguageVisibilityKey(
+				language,
+				this.originalVisibility), visibility);
+	}
+
+	/** @return the key to be used for accessing {@link #languageVisibility}. */
+	private static String getLanguageVisibilityKey(
+			Language language,
+			EVisibility visibility)
+	{
+		return language.name() + ":" + visibility.name(); //$NON-NLS-1$
+	}
+
 }
