@@ -4,11 +4,10 @@ import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.Config;
 import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.EVisibility;
+import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.model.deviant.TypeDeviant;
 import com.mpdeimos.chacy.transform.Transformator;
-
-import java.util.List;
 
 /**
  * Interface for transforming a {@link Type} to a {@link Language#VALA}.
@@ -22,22 +21,16 @@ public class ValaTransformator implements Transformator
 		return new TypeDeviant[] { new TypeDeviant(type, Language.VALA)
 		{
 			@Override
-			public String getVisibility()
+			protected void setUp()
 			{
-				if (this.visibility == EVisibility.PACKAGE_PRIVATE)
-				{
-					return EVisibility.PUBLIC.toString();
-				}
-
-				return super.getVisibility();
-			}
-
-			@Override
-			public List<String> getModifiers()
-			{
-				// there is no final in Vala.
-				this.modifiers.remove(EModifier.FINAL);
-				return super.getModifiers();
+				this.modifiers.replaceVisibility(
+						Language.VALA,
+						EVisibility.PACKAGE_PRIVATE,
+						EVisibility.PUBLIC.toString());
+				this.modifiers.addModifiers(
+						Language.VALA,
+						ModifierCollection.REMOVE_MODIFIER_PREFIX
+								+ EModifier.FINAL.toString());
 			}
 		} };
 	}

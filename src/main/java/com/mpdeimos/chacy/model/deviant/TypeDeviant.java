@@ -1,12 +1,11 @@
 package com.mpdeimos.chacy.model.deviant;
 
 import com.mpdeimos.chacy.Language;
-import com.mpdeimos.chacy.model.EModifier;
+import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.util.FileUtil;
 import com.mpdeimos.chacy.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** Deviant of a {@link Type} for a given language. */
@@ -20,6 +19,13 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	{
 		super(origin);
 		this.deviantInfo = new DeviantInfo<Type>(origin, language);
+		setUp();
+	}
+
+	/** Template method that can be overridden in implementing classes. */
+	protected void setUp()
+	{
+		// template
 	}
 
 	/** {@inheritDoc} */
@@ -55,28 +61,15 @@ public class TypeDeviant extends Type implements Deviant<Type>
 				super.getName());
 	}
 
-	/** Returns a string describing the visibility of the type. */
-	public String getVisibility()
-	{
-		return this.visibility.toString();
-	}
-
-	/** Returns the modifiers of the deviant type. */
+	/** @return the modifiers as strings of the deviant language. */
 	public List<String> getModifiers()
 	{
-		List<String> modifiers = new ArrayList<>();
+		return this.modifiers.getModifiers(this.deviantInfo.getLanguage());
+	}
 
-		String visibility = this.getVisibility();
-		if (!StringUtil.isNullOrEmpty(visibility))
-		{
-			modifiers.add(visibility);
-		}
-
-		for (EModifier modifier : this.modifiers)
-		{
-			modifiers.add(modifier.toString());
-		}
-
-		return modifiers;
+	/** @return the modifier collection. */
+	public ModifierCollection getModifierCollection()
+	{
+		return this.modifiers;
 	}
 }

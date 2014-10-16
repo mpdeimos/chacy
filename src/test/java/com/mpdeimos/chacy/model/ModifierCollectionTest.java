@@ -3,7 +3,7 @@ package com.mpdeimos.chacy.model;
 import com.mpdeimos.chacy.Language;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.EnumSet;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,14 +19,36 @@ public class ModifierCollectionTest
 	{
 		ModifierCollection modifiers = new ModifierCollection(
 				EVisibility.PUBLIC,
-				Arrays.asList("foo", "bar")); //$NON-NLS-1$//$NON-NLS-2$
+				EnumSet.of(EModifier.ABSTRACT, EModifier.FINAL));
 
-		modifiers.addModifiers(Language.VALA, "-bar"); //$NON-NLS-1$
+		modifiers.addModifiers(Language.VALA, "-abstract");
 
 		Assert.assertEquals(
-				Arrays.asList("public", "foo", "bar"), modifiers.getModifiers(Language.CSHARP)); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				Arrays.asList("public", "abstract", "final"),
+				modifiers.getModifiers(Language.CSHARP));
 		Assert.assertEquals(
-				Arrays.asList("public", "foo"), modifiers.getModifiers(Language.VALA)); //$NON-NLS-1$ //$NON-NLS-2$
+				Arrays.asList("public", "final"),
+				modifiers.getModifiers(Language.VALA));
+	}
+
+	/**
+	 * Tests replacing modifiers for a given language.
+	 */
+	@Test
+	public void testReplaceModifiers()
+	{
+		ModifierCollection modifiers = new ModifierCollection(
+				EVisibility.PUBLIC,
+				EnumSet.of(EModifier.ABSTRACT, EModifier.FINAL));
+
+		modifiers.replaceModifier(Language.VALA, EModifier.ABSTRACT, "foo");
+
+		Assert.assertEquals(
+				Arrays.asList("public", "abstract", "final"),
+				modifiers.getModifiers(Language.CSHARP));
+		Assert.assertEquals(
+				Arrays.asList("public", "final", "foo"),
+				modifiers.getModifiers(Language.VALA));
 	}
 
 	/**
@@ -37,14 +59,16 @@ public class ModifierCollectionTest
 	{
 		ModifierCollection modifiers = new ModifierCollection(
 				EVisibility.PUBLIC,
-				Arrays.asList("foo", "bar")); //$NON-NLS-1$//$NON-NLS-2$
+				EnumSet.of(EModifier.ABSTRACT, EModifier.FINAL));
 
-		modifiers.addModifiers(Language.CSHARP, "baz", "boo"); //$NON-NLS-1$ //$NON-NLS-2$
+		modifiers.addModifiers(Language.CSHARP, "baz", "boo");
 
 		Assert.assertEquals(
-				Arrays.asList("public", "foo", "bar", "baz", "boo"), modifiers.getModifiers(Language.CSHARP)); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				Arrays.asList("public", "abstract", "final", "baz", "boo"),
+				modifiers.getModifiers(Language.CSHARP));
 		Assert.assertEquals(
-				Arrays.asList("public", "foo", "bar"), modifiers.getModifiers(Language.VALA)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Arrays.asList("public", "abstract", "final"),
+				modifiers.getModifiers(Language.VALA));
 	}
 
 	/**
@@ -56,9 +80,10 @@ public class ModifierCollectionTest
 	{
 		ModifierCollection modifiers = new ModifierCollection(
 				EVisibility.PUBLIC,
-				Arrays.asList("foo", "bar")); //$NON-NLS-1$//$NON-NLS-2$
+				EnumSet.of(EModifier.ABSTRACT, EModifier.FINAL));
 		Assert.assertEquals(
-				Arrays.asList("public", "foo", "bar"), modifiers.getModifiers(Language.CSHARP)); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				Arrays.asList("public", "abstract", "final"),
+				modifiers.getModifiers(Language.CSHARP));
 	}
 
 	/**
@@ -69,13 +94,18 @@ public class ModifierCollectionTest
 	{
 		ModifierCollection modifiers = new ModifierCollection(
 				EVisibility.PUBLIC,
-				Collections.emptyList());
+				EnumSet.noneOf(EModifier.class));
 
-		modifiers.setVisibility(Language.VALA, "foo"); //$NON-NLS-1$
+		modifiers.replaceVisibility(
+				Language.CSHARP,
+				EVisibility.PRIVATE,
+				"asbtract");
+		modifiers.replaceVisibility(Language.VALA, EVisibility.PUBLIC, "foo");
 		Assert.assertEquals(
-				Arrays.asList("public"), modifiers.getModifiers(Language.CSHARP)); //$NON-NLS-1$
+				Arrays.asList("public"),
+				modifiers.getModifiers(Language.CSHARP));
 		Assert.assertEquals(
-				Arrays.asList("foo"), modifiers.getModifiers(Language.VALA)); //$NON-NLS-1$
+				Arrays.asList("foo"), modifiers.getModifiers(Language.VALA));
 	}
 
 }

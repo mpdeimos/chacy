@@ -3,6 +3,8 @@ package com.mpdeimos.chacy.model;
 import java.util.EnumSet;
 import java.util.Set;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 
 /**
@@ -10,11 +12,16 @@ import javax.lang.model.element.Modifier;
  */
 public enum EModifier
 {
-	FINAL(Modifier.FINAL, "final"), //$NON-NLS-1$
+	/** The abstract modifier. */
+	ABSTRACT(Modifier.ABSTRACT, "abstract"), //$NON-NLS-1$
 
-	ABSTRACT(Modifier.ABSTRACT, "abstract"); //$NON-NLS-1$
+	/** The final modifier. */
+	FINAL(Modifier.FINAL, "final"); //$NON-NLS-1$
 
+	/** The corresponding Java modifier. */
 	private final Modifier modifier;
+
+	/** The display name of the modifier. */
 	private final String name;
 
 	/** Constructor. */
@@ -24,12 +31,26 @@ public enum EModifier
 		this.name = name;
 	}
 
-	public static EnumSet<EModifier> fromModifiers(Set<Modifier> modifiers)
+	/**
+	 * @return The set of modifiers (excluding visibility) for the given
+	 *         element.
+	 */
+	public static EnumSet<EModifier> fromModifiers(Element element)
 	{
+		Set<Modifier> modifiers = element.getModifiers();
+
 		EnumSet<EModifier> result = EnumSet.noneOf(EModifier.class);
 
 		for (EModifier modifier : values())
 		{
+			// interfaces are marked as abstract, but this information is rather
+			// confusing.
+			if (element.getKind() == ElementKind.INTERFACE
+					&& modifier == EModifier.ABSTRACT)
+			{
+				continue;
+			}
+
 			if (modifiers.contains(modifier.modifier))
 			{
 				result.add(modifier);

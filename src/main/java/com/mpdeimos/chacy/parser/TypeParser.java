@@ -5,6 +5,7 @@ import com.mpdeimos.chacy.ChacyException;
 import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.ETypeKind;
 import com.mpdeimos.chacy.model.EVisibility;
+import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
 
 import javax.lang.model.element.Element;
@@ -37,13 +38,21 @@ public interface TypeParser extends Parser<Element, Type>
 					namespace,
 					name,
 					getTypeKind(element),
-					EVisibility.fromModifiers(element.getModifiers()),
-					EModifier.fromModifiers(element.getModifiers()));
+					createModifierCollection(element));
 
 			parseSupportedLanguages(element, type);
 			parseRenameRules(element, type);
 
 			return type;
+		}
+
+		/** Creates a modifier collection from the given element. */
+		private static ModifierCollection createModifierCollection(
+				Element element)
+		{
+			return new ModifierCollection(
+					EVisibility.fromModifiers(element.getModifiers()),
+					EModifier.fromModifiers(element));
 		}
 
 		/** Parses the supported languages for the type. */

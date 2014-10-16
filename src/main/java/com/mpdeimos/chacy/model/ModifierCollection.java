@@ -1,13 +1,14 @@
 package com.mpdeimos.chacy.model;
 
 import com.mpdeimos.chacy.Language;
-import com.mpdeimos.chacy.util.ListMap;
+import com.mpdeimos.chacy.util.CollectionMap;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Collection of modifiers. Supports modification for single languages.
@@ -15,7 +16,7 @@ import java.util.Map;
 public class ModifierCollection
 {
 	/** Prefix for modifiers that will remove this modifier. */
-	private static final String REMOVE_MODIFIER_PREFIX = "-"; //$NON-NLS-1$
+	public static final String REMOVE_MODIFIER_PREFIX = "-"; //$NON-NLS-1$
 
 	/** The original modifiers from the Java class. */
 	private final List<String> originalModifiers;
@@ -24,14 +25,14 @@ public class ModifierCollection
 	 * List of custom modifiers for a language, including modifiers prefixed
 	 * with {@value #REMOVE_MODIFIER_PREFIX}.
 	 */
-	private final ListMap<Language, String> languageModifiers = new ListMap<>();
+	private final CollectionMap<Language, String> languageModifiers;
 
 	/**
 	 * Map that registers rules for substituting Java visibility by a language
 	 * specific visibility. The keys for this have to e created by
 	 * {@link #getLanguageVisibilityKey(Language, EVisibility)}.
 	 */
-	private final Map<String, String> languageVisibility = new HashMap<>();
+	private final Map<String, String> languageVisibility;
 
 	/** The original visibility of the Java class. */
 	private final EVisibility originalVisibility;
@@ -39,10 +40,23 @@ public class ModifierCollection
 	/** Constructor. */
 	public ModifierCollection(
 			EVisibility visibilty,
-			Collection<String> modifiers)
+			EnumSet<EModifier> modifiers)
 	{
 		this.originalVisibility = visibilty;
-		this.originalModifiers = new ArrayList<>(modifiers);
+		this.originalModifiers = new ArrayList<>(modifiers.stream().map(
+				EModifier::toString).collect(Collectors.toList()));
+		this.languageVisibility = new HashMap<>();
+		this.languageModifiers = new CollectionMap<>();
+	}
+
+	/** Copy constructor. */
+	public ModifierCollection(ModifierCollection origin)
+	{
+		this.originalVisibility = origin.originalVisibility;
+		this.originalModifiers = new ArrayList<>(origin.originalModifiers);
+		this.languageVisibility = new HashMap<>(origin.languageVisibility);
+		this.languageModifiers = new CollectionMap<Language, String>(
+				origin.languageModifiers);
 	}
 
 	/**
@@ -54,6 +68,23 @@ public class ModifierCollection
 		for (String modifier : modifiers)
 		{
 			this.languageModifiers.addToList(language, modifier);
+		}
+	}
+
+	/**
+	 * Replaces a modifier for the given language.
+	 */
+	public void replaceModifier(
+			Language language,
+			EModifier javaModifier,
+			String languageModifier)
+	{
+		if (this.originalModifiers.contains(javaModifier.toString()))
+		{
+			this.addModifiers(
+					language,
+					REMOVE_MODIFIER_PREFIX + javaModifier,
+					languageModifier);
 		}
 	}
 
@@ -96,12 +127,15 @@ public class ModifierCollection
 		return this.originalVisibility.toString();
 	}
 
-	/** Sets the visibility for the given language. */
-	public void setVisibility(Language language, String visibility)
+	/** Sets the visibility rule for the given language. */
+	public void replaceVisibility(
+			Language language,
+			EVisibility javaVisibility,
+			String languageVisibility)
 	{
 		this.languageVisibility.put(getLanguageVisibilityKey(
 				language,
-				this.originalVisibility), visibility);
+				javaVisibility), languageVisibility);
 	}
 
 	/** @return the key to be used for accessing {@link #languageVisibility}. */

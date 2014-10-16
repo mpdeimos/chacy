@@ -9,8 +9,6 @@ import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.model.deviant.TypeDeviant;
 import com.mpdeimos.chacy.transform.Transformator;
 
-import java.util.List;
-
 /**
  * Interface for transforming a {@link Type} into a {@link Language#CSHARP}.
  */
@@ -23,26 +21,16 @@ public class CSharpTransformator implements Transformator
 		return new TypeDeviant[] { new TypeDeviant(type, Language.CSHARP)
 		{
 			@Override
-			public String getVisibility()
+			protected void setUp()
 			{
-				if (this.visibility == EVisibility.PACKAGE_PRIVATE)
-				{
-					return CSharp.MODIFIER_INTERNAL;
-				}
-
-				return super.getVisibility();
-			}
-
-			@Override
-			public List<String> getModifiers()
-			{
-				List<String> modifiers = super.getModifiers();
-				int index = modifiers.indexOf(EModifier.FINAL.toString());
-				if (index >= 0)
-				{
-					modifiers.set(index, CSharp.MODIFIER_SEALED);
-				}
-				return modifiers;
+				this.modifiers.replaceVisibility(
+						Language.CSHARP,
+						EVisibility.PACKAGE_PRIVATE,
+						CSharp.MODIFIER_INTERNAL);
+				this.modifiers.replaceModifier(
+						Language.CSHARP,
+						EModifier.FINAL,
+						CSharp.MODIFIER_SEALED);
 			}
 		} };
 	}
