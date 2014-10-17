@@ -33,6 +33,7 @@ public class StringUtil
 		return sb.toString();
 	}
 
+	/** @return <code>null</code> if the string is <code>null</code> or empty. */
 	public static boolean isNullOrEmpty(String s)
 	{
 		return s == null || s.isEmpty();

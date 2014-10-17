@@ -9,14 +9,19 @@ import javax.lang.model.element.Modifier;
  */
 public enum EVisibility
 {
+	/** public Java visibility. */
 	PUBLIC("public"), //$NON-NLS-1$
 
+	/** protected Java visibility. */
 	PROTECTED("protected"), //$NON-NLS-1$
 
+	/** package private visibility. */
 	PACKAGE_PRIVATE(null),
 
+	/** private visibility. */
 	PRIVATE("private"); //$NON-NLS-1$
 
+	/** The display name of the visibility. */
 	private final String name;
 
 	/** Constructor. */
@@ -25,6 +30,7 @@ public enum EVisibility
 		this.name = name;
 	}
 
+	/** @return the {@link EVisibility} from the given Java Modifiers. */
 	public static EVisibility fromModifiers(Set<Modifier> modifiers)
 	{
 		if (modifiers.contains(Modifier.PUBLIC))
