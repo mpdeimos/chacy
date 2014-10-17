@@ -40,6 +40,15 @@ public final class Chacy
 		Value[] value();
 	}
 
+	/** Allows to add modifiers to a type, method, field, etc. */
+	@Target({ ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD,
+			ElementType.METHOD, ElementType.LOCAL_VARIABLE })
+	public @interface Modifier
+	{
+		/** Reference to a language bound value. */
+		Value[] value();
+	}
+
 	/** A language bound value. */
 	@Target(ElementType.ANNOTATION_TYPE)
 	public @interface Value
@@ -51,6 +60,13 @@ public final class Chacy
 		Language[] lang() default {};
 
 		/** The value bound for the language. */
-		String value();
+		String[] value();
+	}
+
+	/** Constants. */
+	public static class Const
+	{
+		/** Prefix that indicates to remove something. */
+		public static final String REMOVE = "-";
 	}
 }

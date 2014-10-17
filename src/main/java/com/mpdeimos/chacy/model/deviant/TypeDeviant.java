@@ -6,6 +6,7 @@ import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.util.FileUtil;
 import com.mpdeimos.chacy.util.StringUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 /** Deviant of a {@link Type} for a given language. */
@@ -58,7 +59,7 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	public String getName()
 	{
 		return this.renameRules.get(this.deviantInfo.getLanguage()).orElse(
-				super.getName());
+				Arrays.asList(super.getName())).iterator().next();
 	}
 
 	/** @return the modifiers as strings of the deviant language. */

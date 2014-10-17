@@ -4,9 +4,9 @@ package com.mpdeimos.chacy.lang;
 public final class CSharp
 {
 	/** The <code>internal</code> modifier. */
-	public static String MODIFIER_INTERNAL = "internal"; //$NON-NLS-1$
+	public static final String MODIFIER_INTERNAL = "internal"; //$NON-NLS-1$
 
 	/** The <code>sealed</code> modifier. */
-	public static String MODIFIER_SEALED = "sealed"; //$NON-NLS-1$
+	public static final String MODIFIER_SEALED = "sealed"; //$NON-NLS-1$
 
 }

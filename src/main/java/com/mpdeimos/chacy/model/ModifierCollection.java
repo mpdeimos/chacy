@@ -1,5 +1,7 @@
 package com.mpdeimos.chacy.model;
 
+import com.mpdeimos.chacy.Chacy;
+import com.mpdeimos.chacy.Chacy.Value;
 import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.util.CollectionMap;
 
@@ -15,9 +17,6 @@ import java.util.stream.Collectors;
  */
 public class ModifierCollection
 {
-	/** Prefix for modifiers that will remove this modifier. */
-	public static final String REMOVE_MODIFIER_PREFIX = "-"; //$NON-NLS-1$
-
 	/** The original modifiers from the Java class. */
 	private final List<String> originalModifiers;
 
@@ -71,6 +70,24 @@ public class ModifierCollection
 		}
 	}
 
+	/** Adds modifiers from the given value annotation. */
+	public void addModifiers(Value... values)
+	{
+		for (Value value : values)
+		{
+			Language[] languages = value.lang();
+			if (languages.length == 0)
+			{
+				languages = Language.values();
+			}
+
+			for (Language language : languages)
+			{
+				addModifiers(language, value.value());
+			}
+		}
+	}
+
 	/**
 	 * Replaces a modifier for the given language.
 	 */
@@ -83,7 +100,7 @@ public class ModifierCollection
 		{
 			this.addModifiers(
 					language,
-					REMOVE_MODIFIER_PREFIX + javaModifier,
+					Chacy.Const.REMOVE + javaModifier,
 					languageModifier);
 		}
 	}
@@ -100,7 +117,7 @@ public class ModifierCollection
 		{
 			for (String modifier : languageModifiers)
 			{
-				if (modifier.startsWith(REMOVE_MODIFIER_PREFIX))
+				if (modifier.startsWith(Chacy.Const.REMOVE))
 				{
 					modifiers.remove(modifier.substring(1));
 				}
@@ -145,5 +162,4 @@ public class ModifierCollection
 	{
 		return language.name() + ":" + visibility.name(); //$NON-NLS-1$
 	}
-
 }

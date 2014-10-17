@@ -1,10 +1,10 @@
 package com.mpdeimos.chacy.transform.vala;
 
+import com.mpdeimos.chacy.Chacy;
 import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.Config;
 import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.EVisibility;
-import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.model.deviant.TypeDeviant;
 import com.mpdeimos.chacy.transform.Transformator;
@@ -29,7 +29,7 @@ public class ValaTransformator implements Transformator
 						EVisibility.PUBLIC.toString());
 				this.modifiers.addModifiers(
 						Language.VALA,
-						ModifierCollection.REMOVE_MODIFIER_PREFIX
+						Chacy.Const.REMOVE
 								+ EModifier.FINAL.toString());
 			}
 		} };

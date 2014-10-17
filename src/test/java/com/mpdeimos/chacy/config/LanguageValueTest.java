@@ -48,7 +48,7 @@ public class LanguageValueTest
 
 		Assert.assertThat(
 				ALL,
-				CoreMatchers.everyItem(new PredicateMatcher<Language>("absent", //$NON-NLS-1$
+				CoreMatchers.everyItem(new PredicateMatcher<Language>("absent",
 						language -> !values.get(language).isPresent())));
 	}
 
@@ -65,7 +65,7 @@ public class LanguageValueTest
 	{
 		LanguageValue values = getValues(TestClassAllSet.class);
 
-		assertAllValues(values, ALL, "foo"); //$NON-NLS-1$
+		assertAllValues(values, ALL, "foo");
 	}
 
 	/** Tests specifying a language value will overriding all. */
@@ -73,19 +73,19 @@ public class LanguageValueTest
 	public void testOverrideAll()
 	{
 		LanguageValue values = new LanguageValue();
-		values.set("foo"); //$NON-NLS-1$
-		values.set("bar", Language.CSHARP); //$NON-NLS-1$
+		values.set(new Language[] {}, "foo");
+		values.set(new Language[] { Language.CSHARP }, "bar");
 
-		assertAllValues(values, CSHARP, "bar"); //$NON-NLS-1$
-		assertAllValues(values, NOT_CSHARP, "foo"); //$NON-NLS-1$
+		assertAllValues(values, CSHARP, "bar");
+		assertAllValues(values, NOT_CSHARP, "foo");
 
 		// setting in reverse order will yield the same result
 		values = new LanguageValue();
-		values.set("bar", Language.CSHARP); //$NON-NLS-1$
-		values.set("foo"); //$NON-NLS-1$
+		values.set(new Language[] { Language.CSHARP }, "bar");
+		values.set(new Language[] {}, "foo");
 
-		assertAllValues(values, CSHARP, "bar"); //$NON-NLS-1$
-		assertAllValues(values, NOT_CSHARP, "foo"); //$NON-NLS-1$
+		assertAllValues(values, CSHARP, "bar");
+		assertAllValues(values, NOT_CSHARP, "foo");
 	}
 
 	/**
@@ -108,7 +108,8 @@ public class LanguageValueTest
 	{
 		Assert.assertThat(
 				allOf.stream().map(
-						language -> values.get(language).get()).collect(
+						language -> values.get(language).get()).flatMap(
+						list -> list.stream()).collect(
 						Collectors.toList()),
 				CoreMatchers.everyItem(CoreMatchers.is(value)));
 	}

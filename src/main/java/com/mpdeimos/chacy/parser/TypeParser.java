@@ -50,9 +50,17 @@ public interface TypeParser extends Parser<Element, Type>
 		private static ModifierCollection createModifierCollection(
 				Element element)
 		{
-			return new ModifierCollection(
+			ModifierCollection collection = new ModifierCollection(
 					EVisibility.fromModifiers(element.getModifiers()),
 					EModifier.fromModifiers(element));
+
+			Chacy.Modifier modifierAnnotation = element.getAnnotation(Chacy.Modifier.class);
+			if (modifierAnnotation != null)
+			{
+				collection.addModifiers(modifierAnnotation.value());
+			}
+
+			return collection;
 		}
 
 		/** Parses the supported languages for the type. */
