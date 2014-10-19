@@ -41,9 +41,9 @@ public class PredicateMatcher<T> extends TypeSafeMatcher<T>
 			T item,
 			Description mismatchDescription)
 	{
-		mismatchDescription.appendText("was not "); //$NON-NLS-1$
+		mismatchDescription.appendText("was not ");
 		describeTo(mismatchDescription);
-		mismatchDescription.appendText(" for "); //$NON-NLS-1$
+		mismatchDescription.appendText(" for ");
 		mismatchDescription.appendValue(item);
 	}
 }

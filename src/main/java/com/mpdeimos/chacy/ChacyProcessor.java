@@ -32,7 +32,7 @@ import javax.tools.Diagnostic;
 public class ChacyProcessor extends AbstractProcessor
 {
 	/** Config flag to enable debug output for ST4. */
-	public static final String DEBUG_TEMPLATE = "chacy.debug.tpl"; //$NON-NLS-1$
+	public static final String DEBUG_TEMPLATE = "chacy.debug.tpl";
 
 	/** The global configuration. */
 	private final Config config = new Config();
@@ -132,12 +132,12 @@ public class ChacyProcessor extends AbstractProcessor
 		}
 		catch (IOException e)
 		{
-			printError("Could not convert class " //$NON-NLS-1$
+			printError("Could not convert class "
 					+ JavaUtil.getNamespace(type.getName(),
 							type.getNamespace())
-					+ " to language " //$NON-NLS-1$
+					+ " to language "
 					+ type.getDeviantInfo().getLanguage()
-							.getSpokenName() + ": " //$NON-NLS-1$
+							.getSpokenName() + ": "
 					+ e.getMessage());
 		}
 	}

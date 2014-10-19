@@ -43,7 +43,7 @@ public abstract class HarnessTestBase
 	/** @return the ouput directory of the test. */
 	private Path getTestOutput()
 	{
-		return Paths.get("test-tmp", //$NON-NLS-1$
+		return Paths.get("test-tmp",
 				this.getClass().getCanonicalName(),
 				this.testName.getMethodName());
 	}
@@ -58,7 +58,7 @@ public abstract class HarnessTestBase
 	protected class Harness
 	{
 		/** The path where the harjness source data is stored. */
-		private static final String HARNESS_DATA = "src/test/resources/harness"; //$NON-NLS-1$
+		private static final String HARNESS_DATA = "src/test/resources/harness";
 
 		/** The output directory for the harness. */
 		private final Path output;
@@ -103,7 +103,7 @@ public abstract class HarnessTestBase
 			List<String> options = null;
 			if (Boolean.parseBoolean(System.getProperty(ChacyProcessor.DEBUG_TEMPLATE)))
 			{
-				options = Arrays.asList(String.format("-A%s=true", //$NON-NLS-1$
+				options = Arrays.asList(String.format("-A%s=true",
 						ChacyProcessor.DEBUG_TEMPLATE));
 			}
 
@@ -118,7 +118,7 @@ public abstract class HarnessTestBase
 			task.setProcessors(Arrays.asList(this.processor));
 
 			return new CompilationResult(task.call(), Paths.get(HARNESS_DATA,
-					this.harness, "fixture"), outputDir); //$NON-NLS-1$
+					this.harness, "fixture"), outputDir);
 		}
 
 		private Iterable<? extends JavaFileObject> getCompilationUnits(
@@ -127,11 +127,11 @@ public abstract class HarnessTestBase
 		{
 			if (filenames.length == 0)
 			{
-				filenames = new String[] { "**" }; //$NON-NLS-1$
+				filenames = new String[] { "**" };
 			}
 
 			List<Path> paths = FileUtil.listFiles(
-					Paths.get(HARNESS_DATA, this.harness, "src"), filenames); //$NON-NLS-1$
+					Paths.get(HARNESS_DATA, this.harness, "src"), filenames);
 
 			List<JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>();
 			for (Path path : paths)
@@ -152,18 +152,18 @@ public abstract class HarnessTestBase
 		{
 			Path outputDir = createUniquePath(this.output);
 
-			Path binDir = outputDir.resolve("bin"); //$NON-NLS-1$
+			Path binDir = outputDir.resolve("bin");
 			Files.createDirectories(binDir);
 			fileManager.setLocation(StandardLocation.CLASS_OUTPUT,
 					Arrays.asList(binDir.toFile()));
 
-			Path srcDir = outputDir.resolve("src"); //$NON-NLS-1$
+			Path srcDir = outputDir.resolve("src");
 			Files.createDirectories(srcDir);
 			fileManager.setLocation(StandardLocation.SOURCE_OUTPUT,
 					Arrays.asList(srcDir.toFile()));
 
 			fileManager.setLocation(StandardLocation.CLASS_PATH,
-					Arrays.asList(new File("bin/ifc/java"))); //$NON-NLS-1$
+					Arrays.asList(new File("bin/ifc/java")));
 
 			return srcDir;
 		}
@@ -178,7 +178,7 @@ public abstract class HarnessTestBase
 			String name = path.getFileName().toString();
 			while (Files.exists(path))
 			{
-				path = path.resolveSibling(name + "_" + i); //$NON-NLS-1$
+				path = path.resolveSibling(name + "_" + i);
 			}
 
 			Files.createDirectories(path);
@@ -216,7 +216,7 @@ public abstract class HarnessTestBase
 		/** Asserts that the compilation was successful. */
 		public void assertSuccess()
 		{
-			Assert.assertTrue("Compilation was not successful", this.success); //$NON-NLS-1$
+			Assert.assertTrue("Compilation was not successful", this.success);
 		}
 
 		/**
@@ -236,16 +236,16 @@ public abstract class HarnessTestBase
 
 				if (!Files.exists(actual))
 				{
-					Assert.fail("File " + actual + " has not been written"); //$NON-NLS-1$ //$NON-NLS-2$
+					Assert.fail("File " + actual + " has not been written");
 				}
 
 				Assert.assertEquals(
-						"File " + actual + " has not the expected content", FileUtil.readAllText(expected), FileUtil.readAllText(actual)); //$NON-NLS-1$ //$NON-NLS-2$
+						"File " + actual + " has not the expected content", FileUtil.readAllText(expected), FileUtil.readAllText(actual));
 
 				actualFiles.remove(actual);
 			}
 
-			Assert.assertEquals("Encountered unexpected generated files.", //$NON-NLS-1$
+			Assert.assertEquals("Encountered unexpected generated files.",
 					Collections.<Path> emptySet(),
 					actualFiles);
 		}

@@ -13,10 +13,10 @@ import javax.lang.model.element.Modifier;
 public enum EModifier
 {
 	/** The abstract modifier. */
-	ABSTRACT(Modifier.ABSTRACT, "abstract"), //$NON-NLS-1$
+	ABSTRACT(Modifier.ABSTRACT, "abstract"),
 
 	/** The final modifier. */
-	FINAL(Modifier.FINAL, "final"); //$NON-NLS-1$
+	FINAL(Modifier.FINAL, "final");
 
 	/** The corresponding Java modifier. */
 	private final Modifier modifier;

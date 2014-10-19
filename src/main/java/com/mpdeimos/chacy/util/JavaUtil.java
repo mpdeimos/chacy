@@ -4,7 +4,7 @@ package com.mpdeimos.chacy.util;
 public class JavaUtil
 {
 	/** Separator for namespace parts. */
-	public static String NAMESPACE_SEPARATOR = "."; //$NON-NLS-1$
+	public static String NAMESPACE_SEPARATOR = ".";
 
 	/**
 	 * Creates a Java namespace from the single namespace parts. If the parts

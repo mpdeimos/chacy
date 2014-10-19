@@ -160,6 +160,6 @@ public class ModifierCollection
 			Language language,
 			EVisibility visibility)
 	{
-		return language.name() + ":" + visibility.name(); //$NON-NLS-1$
+		return language.name() + ":" + visibility.name();
 	}
 }

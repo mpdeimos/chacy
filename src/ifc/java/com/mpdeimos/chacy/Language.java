@@ -5,10 +5,10 @@ package com.mpdeimos.chacy;
 public enum Language
 {
 	/** The C# programming language */
-	CSHARP("C#", "cs"), //$NON-NLS-1$ //$NON-NLS-2$
+	CSHARP("C#", "cs"),
 
 	/** The CoffeeScript language which can be compiled to JavaScript. */
-	VALA("Vala", "vala"), //$NON-NLS-1$ //$NON-NLS-2$
+	VALA("Vala", "vala"),
 
 	;
 

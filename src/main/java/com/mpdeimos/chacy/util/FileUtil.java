@@ -14,7 +14,7 @@ import java.util.List;
 public class FileUtil
 {
 	/** The separator between filename and extension. */
-	public static final String EXTENSION_SEPARATOR = "."; //$NON-NLS-1$
+	public static final String EXTENSION_SEPARATOR = ".";
 
 	/** Removes a directory (or file) including all its children. */
 	public static void removeRecursive(Path path) throws IOException
@@ -64,14 +64,14 @@ public class FileUtil
 	{
 		if (globs.length == 0)
 		{
-			globs = new String[] { "**" }; //$NON-NLS-1$
+			globs = new String[] { "**" };
 		}
 
 		final List<PathMatcher> matchers = new ArrayList<PathMatcher>(
 				globs.length);
 		for (String glob : globs)
 		{
-			matchers.add(path.getFileSystem().getPathMatcher("glob:" + glob)); //$NON-NLS-1$
+			matchers.add(path.getFileSystem().getPathMatcher("glob:" + glob));
 		}
 
 		final List<Path> files = new ArrayList<Path>();

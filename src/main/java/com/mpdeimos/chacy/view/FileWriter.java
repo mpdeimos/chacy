@@ -25,7 +25,7 @@ import org.stringtemplate.v4.misc.ErrorBuffer;
 public class FileWriter
 {
 	/** Encoding for template files. */
-	private static final String ST_ENCODING = "UTF-8"; //$NON-NLS-1$
+	private static final String ST_ENCODING = "UTF-8";
 
 	/** Char used by String Template to start expressions. */
 	private static final char ST_DELIMITER_START_CHAR = '<';
@@ -61,7 +61,7 @@ public class FileWriter
 
 		try (Writer writer = openOutputWriter(language))
 		{
-			ST tpl = tplGroup.getInstanceOf("file"); //$NON-NLS-1$
+			ST tpl = tplGroup.getInstanceOf("file");
 			if (tpl == null)
 			{
 				throw new IOException(
@@ -69,7 +69,7 @@ public class FileWriter
 								+ language);
 			}
 
-			tpl.add("type", this.type); //$NON-NLS-1$
+			tpl.add("type", this.type);
 			tpl.write(new AutoIndentWriter(writer));
 		}
 		catch (Throwable e)

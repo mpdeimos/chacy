@@ -10,16 +10,16 @@ import javax.lang.model.element.Modifier;
 public enum EVisibility
 {
 	/** public Java visibility. */
-	PUBLIC("public"), //$NON-NLS-1$
+	PUBLIC("public"),
 
 	/** protected Java visibility. */
-	PROTECTED("protected"), //$NON-NLS-1$
+	PROTECTED("protected"),
 
 	/** package private visibility. */
 	PACKAGE_PRIVATE(null),
 
 	/** private visibility. */
-	PRIVATE("private"); //$NON-NLS-1$
+	PRIVATE("private");
 
 	/** The display name of the visibility. */
 	private final String name;
