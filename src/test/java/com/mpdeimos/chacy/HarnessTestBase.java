@@ -40,7 +40,7 @@ public abstract class HarnessTestBase
 		FileUtil.removeRecursive(getTestOutput());
 	}
 
-	/** @return the ouput directory of the test. */
+	/** @return the output directory of the test. */
 	private Path getTestOutput()
 	{
 		return Paths.get("test-tmp",
@@ -121,6 +121,7 @@ public abstract class HarnessTestBase
 					this.harness, "fixture"), outputDir);
 		}
 
+		/** @return the compilation units (source files) found in a folder. */
 		private Iterable<? extends JavaFileObject> getCompilationUnits(
 				StandardJavaFileManager fileManager, String... filenames)
 				throws IOException
@@ -240,7 +241,9 @@ public abstract class HarnessTestBase
 				}
 
 				Assert.assertEquals(
-						"File " + actual + " has not the expected content", FileUtil.readAllText(expected), FileUtil.readAllText(actual));
+						"File " + actual + " has not the expected content",
+						FileUtil.readAllText(expected),
+						FileUtil.readAllText(actual));
 
 				actualFiles.remove(actual);
 			}
