@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaCompiler;
@@ -29,6 +30,9 @@ import org.junit.rules.TestName;
 /** Base class for Harness tests. */
 public abstract class HarnessTestBase
 {
+	/** The path where the harness source data is stored. */
+	private static final String HARNESS_DATA = "src/test/resources/harness";
+
 	/** Rule to catch the JUnit test name. */
 	@Rule
 	public TestName testName = new TestName();
@@ -54,12 +58,15 @@ public abstract class HarnessTestBase
 		return new Harness(getTestOutput(), harness);
 	}
 
+	/** @return The available harnesses. */
+	protected static Stream<Path> listHarnesses() throws IOException
+	{
+		return Files.list(Paths.get(HARNESS_DATA));
+	}
+
 	/** Allows access and compilation of harness data. */
 	protected class Harness
 	{
-		/** The path where the harjness source data is stored. */
-		private static final String HARNESS_DATA = "src/test/resources/harness";
-
 		/** The output directory for the harness. */
 		private final Path output;
 

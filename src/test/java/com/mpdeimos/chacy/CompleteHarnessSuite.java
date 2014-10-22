@@ -1,7 +1,7 @@
 package com.mpdeimos.chacy;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +22,11 @@ public class CompleteHarnessSuite extends HarnessTestBase
 
 	/** @return the test harnesses. */
 	@Parameters(name = "{0}")
-	public static Iterable<String[]> getHarnesses()
+	public static Iterable<String[]> getHarnesses() throws IOException
 	{
-		return Arrays.asList(new String[][] { { SIMPLE } });
+		return listHarnesses().map(
+				harness -> new String[] { harness.getFileName().toString() }).collect(
+				Collectors.toList());
 	}
 
 	/** Constructor. */
