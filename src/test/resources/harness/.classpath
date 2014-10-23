@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="simple/src"/>
+	<classpathentry kind="src" path="modifier/src"/>
+	<classpathentry kind="src" path="ignore/src"/>
+	<classpathentry kind="src" path="rename/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.mpdeimos.chacy"/>
+	<classpathentry kind="output" path=".bin"/>
+</classpath>

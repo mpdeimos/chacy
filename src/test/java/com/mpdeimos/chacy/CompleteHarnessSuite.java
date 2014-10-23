@@ -14,9 +14,6 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Parameterized.class)
 public class CompleteHarnessSuite extends HarnessTestBase
 {
-	/** Name of the simple test harness. */
-	private static final String SIMPLE = "simple";
-
 	/** The harness to test. */
 	private final String harness;
 
@@ -24,7 +21,8 @@ public class CompleteHarnessSuite extends HarnessTestBase
 	@Parameters(name = "{0}")
 	public static Iterable<String[]> getHarnesses() throws IOException
 	{
-		return listHarnesses().map(
+		return listHarnesses().filter(
+				path -> !path.getFileName().toString().startsWith(".")).map(
 				harness -> new String[] { harness.getFileName().toString() }).collect(
 				Collectors.toList());
 	}
