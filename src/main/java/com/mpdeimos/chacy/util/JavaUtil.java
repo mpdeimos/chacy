@@ -1,5 +1,7 @@
 package com.mpdeimos.chacy.util;
 
+import java.util.regex.Pattern;
+
 /** Utilities for Java code. */
 public class JavaUtil
 {
@@ -32,6 +34,6 @@ public class JavaUtil
 			return new String[] {};
 		}
 
-		return namespace.split(NAMESPACE_SEPARATOR);
+		return namespace.split(Pattern.quote(NAMESPACE_SEPARATOR));
 	}
 }

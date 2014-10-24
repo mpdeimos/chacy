@@ -9,7 +9,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Tests the harness directory. TODO change this to be a test suite.
+ * Tests the harness directory.
  */
 @RunWith(Parameterized.class)
 public class CompleteHarnessSuite extends HarnessTestBase

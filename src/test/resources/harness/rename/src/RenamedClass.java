@@ -1,5 +1,4 @@
 import com.mpdeimos.chacy.Chacy;
-import com.mpdeimos.chacy.Chacy.Value;
 import com.mpdeimos.chacy.Language;
 
 @Chacy.Type

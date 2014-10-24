@@ -25,9 +25,9 @@ public interface TypeParser extends Parser<Element, Type>
 		/** Static implementation of {@link TypeParser} signature. */
 		private static Type parse(Element element) throws ChacyException
 		{
-			String namespace = element.getEnclosingElement().getSimpleName()
-					.toString();
-			if (namespace.isEmpty())
+			String namespace = element.getEnclosingElement().toString();
+
+			if (namespace.isEmpty() || namespace.equals("unnamed package"))
 			{
 				namespace = null;
 			}
