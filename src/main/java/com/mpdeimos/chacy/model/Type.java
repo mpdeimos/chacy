@@ -6,8 +6,8 @@ import com.mpdeimos.chacy.util.JavaUtil;
 /** Represents a type extracted from Java, e.g. a class, interface, etc. */
 public class Type extends Element
 {
-	/** The namespace parts of the type. */
-	protected String[] namespaceParts;
+	/** The namespace of the type. */
+	protected String namespace;
 
 	/** The name of the type. */
 	protected String name;
@@ -15,8 +15,11 @@ public class Type extends Element
 	/** The kind of this type. */
 	protected ETypeKind kind;
 
-	/** Map of rename rules. */
-	protected LanguageValue renameRules = new LanguageValue();
+	/** Map of type rename rules. */
+	protected LanguageValue typeNameRules = new LanguageValue();
+
+	/** Map of package rename rules. */
+	protected LanguageValue packageNameRules = new LanguageValue();
 
 	/** The visibility of the type. */
 	protected EVisibility visibility;
@@ -31,7 +34,7 @@ public class Type extends Element
 			ETypeKind kind,
 			ModifierCollection modifiers)
 	{
-		this.namespaceParts = JavaUtil.splitNamespace(namespace);
+		this.namespace = namespace;
 		this.name = name;
 		this.kind = kind;
 		this.modifiers = modifiers;
@@ -40,10 +43,11 @@ public class Type extends Element
 	/** Copy constructor. */
 	public Type(Type origin)
 	{
-		this.namespaceParts = origin.namespaceParts;
+		this.namespace = origin.namespace;
 		this.name = origin.name;
 		this.kind = origin.kind;
-		this.renameRules = new LanguageValue(origin.renameRules);
+		this.typeNameRules = new LanguageValue(origin.typeNameRules);
+		this.packageNameRules = new LanguageValue(origin.packageNameRules);
 		this.visibility = origin.visibility;
 		this.modifiers = new ModifierCollection(origin.modifiers);
 	}
@@ -51,7 +55,7 @@ public class Type extends Element
 	/** @see #namespace */
 	public String getNamespace()
 	{
-		return JavaUtil.getNamespace(this.namespaceParts);
+		return this.namespace;
 	}
 
 	/** @see #name */
@@ -72,9 +76,15 @@ public class Type extends Element
 		return this.kind;
 	}
 
-	/** @see #renameRules */
-	public LanguageValue getRenameRules()
+	/** @see #typeNameRules */
+	public LanguageValue getTypeNameRules()
 	{
-		return this.renameRules;
+		return this.typeNameRules;
+	}
+
+	/** @see #packageNameRules */
+	public LanguageValue getPackageNameRules()
+	{
+		return this.packageNameRules;
 	}
 }

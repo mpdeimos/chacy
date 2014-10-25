@@ -58,8 +58,16 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	@Override
 	public String getName()
 	{
-		return this.renameRules.get(this.deviantInfo.getLanguage()).orElse(
+		return this.typeNameRules.get(this.deviantInfo.getLanguage()).orElse(
 				Arrays.asList(super.getName())).iterator().next();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getNamespace()
+	{
+		return this.packageNameRules.get(this.deviantInfo.getLanguage()).orElse(
+				Arrays.asList(super.getNamespace())).iterator().next();
 	}
 
 	/** @return the modifiers as strings of the deviant language. */

@@ -2,6 +2,8 @@ package com.mpdeimos.chacy.util;
 
 import java.util.regex.Pattern;
 
+import javax.lang.model.element.Element;
+
 /** Utilities for Java code. */
 public class JavaUtil
 {
@@ -35,5 +37,16 @@ public class JavaUtil
 		}
 
 		return namespace.split(Pattern.quote(NAMESPACE_SEPARATOR));
+	}
+
+	/** @return the package element (toplevel parent) of an element. */
+	public static Element getPackage(Element element)
+	{
+		while (element.getEnclosingElement() != null)
+		{
+			element = element.getEnclosingElement();
+		}
+
+		return element;
 	}
 }

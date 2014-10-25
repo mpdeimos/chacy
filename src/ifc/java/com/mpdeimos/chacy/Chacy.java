@@ -33,7 +33,7 @@ public final class Chacy
 
 	/** Allows to rename a type, method, field, etc. */
 	@Target({ ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD,
-			ElementType.METHOD, ElementType.LOCAL_VARIABLE })
+			ElementType.METHOD, ElementType.LOCAL_VARIABLE, ElementType.PACKAGE })
 	public @interface Name
 	{
 		/** Reference to a language bound value. */

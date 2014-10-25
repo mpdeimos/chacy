@@ -7,6 +7,7 @@ import com.mpdeimos.chacy.model.ETypeKind;
 import com.mpdeimos.chacy.model.EVisibility;
 import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
+import com.mpdeimos.chacy.util.JavaUtil;
 
 import javax.lang.model.element.Element;
 
@@ -25,17 +26,10 @@ public interface TypeParser extends Parser<Element, Type>
 		/** Static implementation of {@link TypeParser} signature. */
 		private static Type parse(Element element) throws ChacyException
 		{
-			String namespace = element.getEnclosingElement().toString();
-
-			if (namespace.isEmpty() || namespace.equals("unnamed package"))
-			{
-				namespace = null;
-			}
-
 			String name = element.getSimpleName().toString();
 
 			Type type = new Type(
-					namespace,
+					parsePackageName(element),
 					name,
 					getTypeKind(element),
 					createModifierCollection(element));
@@ -44,6 +38,18 @@ public interface TypeParser extends Parser<Element, Type>
 			parseRenameRules(element, type);
 
 			return type;
+		}
+
+		/** @return The package name of the element. */
+		private static String parsePackageName(Element element)
+		{
+			String namespace = JavaUtil.getPackage(element).toString();
+
+			if (namespace.isEmpty() || namespace.equals("unnamed package"))
+			{
+				namespace = null;
+			}
+			return namespace;
 		}
 
 		/** Creates a modifier collection from the given element. */
@@ -81,12 +87,17 @@ public interface TypeParser extends Parser<Element, Type>
 		private static void parseRenameRules(Element element, Type type)
 		{
 			Chacy.Name nameAnnotation = element.getAnnotation(Chacy.Name.class);
-			if (nameAnnotation == null)
+			if (nameAnnotation != null)
 			{
-				return;
+				type.getTypeNameRules().set(nameAnnotation.value());
 			}
 
-			type.getRenameRules().set(nameAnnotation.value());
+			nameAnnotation = JavaUtil.getPackage(element).getAnnotation(
+					Chacy.Name.class);
+			if (nameAnnotation != null)
+			{
+				type.getPackageNameRules().set(nameAnnotation.value());
+			}
 		}
 
 		/** @return the {@link ETypeKind} of the element. */

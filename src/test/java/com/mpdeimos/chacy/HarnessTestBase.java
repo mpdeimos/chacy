@@ -233,31 +233,33 @@ public abstract class HarnessTestBase
 		 */
 		public void assertOutput() throws IOException
 		{
-			Set<Path> actualFiles = new HashSet<Path>(
-					FileUtil.listFiles(this.output));
+			Set<Path> fixtureFiles = new HashSet<Path>(
+					FileUtil.listFiles(this.fixture));
 
-			for (Path expected : FileUtil.listFiles(this.fixture))
+			for (Path source : FileUtil.listFiles(this.output))
 			{
-				Path relative = expected.subpath(this.fixture.getNameCount(),
-						expected.getNameCount());
-				Path actual = this.output.resolve(relative);
+				Path relative = source.subpath(this.output.getNameCount(),
+						source.getNameCount());
+				Path fixture = this.fixture.resolve(relative);
 
-				if (!Files.exists(actual))
+				if (!Files.exists(fixture))
 				{
-					Assert.fail("File " + actual + " has not been written");
+					Assert.fail("File " + fixture
+							+ " is unexpectedly generated.");
 				}
 
 				Assert.assertEquals(
-						"File " + actual + " has not the expected content",
-						FileUtil.readAllText(expected),
-						FileUtil.readAllText(actual));
+						"File " + fixture + " has not the expected content",
+						FileUtil.readAllText(fixture),
+						FileUtil.readAllText(source));
 
-				actualFiles.remove(actual);
+				fixtureFiles.remove(fixture);
 			}
 
-			Assert.assertEquals("Encountered unexpected generated files.",
+			Assert.assertEquals(
+					"Encountered files that have not been written.",
 					Collections.<Path> emptySet(),
-					actualFiles);
+					fixtureFiles);
 		}
 	}
 }
