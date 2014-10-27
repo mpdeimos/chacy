@@ -5,7 +5,7 @@ import com.mpdeimos.chacy.model.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 
 /** Registry of language element parsers. */
 public class ParserRegistry
@@ -16,7 +16,7 @@ public class ParserRegistry
 	/** Constructor. */
 	public ParserRegistry()
 	{
-		add(Element.class, Type.class, TypeParser.get());
+		add(TypeElement.class, Type.class, TypeParser.get());
 	}
 
 	/** Adds a parser to the parser map. */

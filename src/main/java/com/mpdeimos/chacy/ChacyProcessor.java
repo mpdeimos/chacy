@@ -5,6 +5,7 @@ import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.model.deviant.TypeDeviant;
 import com.mpdeimos.chacy.parser.TypeParser;
 import com.mpdeimos.chacy.transform.Transformator;
+import com.mpdeimos.chacy.util.AssertUtil;
 import com.mpdeimos.chacy.util.JavaUtil;
 import com.mpdeimos.chacy.view.FileWriter;
 
@@ -64,11 +65,20 @@ public class ChacyProcessor extends AbstractProcessor
 		for (Element element : roundEnv
 				.getElementsAnnotatedWith(Chacy.Type.class))
 		{
+			if (!(element instanceof TypeElement))
+			{
+				continue;
+			}
+
+			TypeElement typeElement = AssertUtil.checkedCast(
+					element,
+					TypeElement.class);
+
 			try
 			{
 				// TODO (MP) Check whether the parent is a package and not
 				// another type.
-				Type type = parseType(element);
+				Type type = parseType(typeElement);
 				Map<Language, TypeDeviant[]> convertedTypes = transformType(type);
 				writeTypes(convertedTypes);
 			}
@@ -81,7 +91,7 @@ public class ChacyProcessor extends AbstractProcessor
 	}
 
 	/** Parses the Java Type from the type element. */
-	private Type parseType(Element element) throws ChacyException
+	private Type parseType(TypeElement element) throws ChacyException
 	{
 		return TypeParser.get().parse(element);
 	}
