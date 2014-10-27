@@ -10,9 +10,10 @@ import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.util.JavaUtil;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 
 /** Parses Java types from the javax implementation to Chacy model objects. */
-public interface TypeParser extends Parser<Element, Type>
+public interface TypeParser extends Parser<TypeElement, Type>
 {
 	/** @return A type parser instance. */
 	public static TypeParser get()
@@ -24,7 +25,7 @@ public interface TypeParser extends Parser<Element, Type>
 	public static class Implementation
 	{
 		/** Static implementation of {@link TypeParser} signature. */
-		private static Type parse(Element element) throws ChacyException
+		private static Type parse(TypeElement element) throws ChacyException
 		{
 			String name = element.getSimpleName().toString();
 
