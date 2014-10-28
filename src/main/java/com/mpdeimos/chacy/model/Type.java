@@ -3,6 +3,9 @@ package com.mpdeimos.chacy.model;
 import com.mpdeimos.chacy.config.LanguageValue;
 import com.mpdeimos.chacy.util.JavaUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Represents a type extracted from Java, e.g. a class, interface, etc. */
 public class Type extends Element
 {
@@ -27,6 +30,8 @@ public class Type extends Element
 	/** Modifiers of the type. */
 	protected final ModifierCollection modifiers;
 
+	private List<String> methods = new ArrayList<String>();
+
 	/** Constructor. */
 	public Type(
 			String namespace,
@@ -50,6 +55,7 @@ public class Type extends Element
 		this.packageNameRules = new LanguageValue(origin.packageNameRules);
 		this.visibility = origin.visibility;
 		this.modifiers = new ModifierCollection(origin.modifiers);
+		this.methods = new ArrayList<>(origin.methods);
 	}
 
 	/** @see #namespace */
@@ -86,5 +92,16 @@ public class Type extends Element
 	public LanguageValue getPackageNameRules()
 	{
 		return this.packageNameRules;
+	}
+
+	/** TODO */
+	public void addMethod(String name)
+	{
+		this.methods.add(name);
+	}
+
+	public List<String> getMethods()
+	{
+		return this.methods;
 	}
 }

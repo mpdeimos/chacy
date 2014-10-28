@@ -7,9 +7,11 @@ import com.mpdeimos.chacy.model.ETypeKind;
 import com.mpdeimos.chacy.model.EVisibility;
 import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
+import com.mpdeimos.chacy.util.AssertUtil;
 import com.mpdeimos.chacy.util.JavaUtil;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 /** Parses Java types from the javax implementation to Chacy model objects. */
@@ -37,8 +39,33 @@ public interface TypeParser extends Parser<TypeElement, Type>
 
 			parseSupportedLanguages(element, type);
 			parseRenameRules(element, type);
+			parseChildElements(element, type);
 
 			return type;
+		}
+
+		/** Parses the child elements from the type. */
+		private static void parseChildElements(Element element, Type type)
+		{
+			for (Element child : element.getEnclosedElements())
+			{
+				switch (child.getKind())
+				{
+				case METHOD:
+					parseMethod(AssertUtil.checkedCast(
+							child,
+							ExecutableElement.class), type);
+					break;
+				default:
+					// TODO warning if everything is implemented
+				}
+			}
+		}
+
+		/** Parses the method from the type. */
+		private static void parseMethod(ExecutableElement method, Type type)
+		{
+			type.addMethod(method.getSimpleName().toString());
 		}
 
 		/** @return The package name of the element. */

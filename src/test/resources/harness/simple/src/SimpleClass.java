@@ -7,4 +7,9 @@ public class SimpleClass
 	{
 		System.out.println("bar");
 	}
+
+	private void bar()
+	{
+		System.out.println("bar");
+	}
 }
