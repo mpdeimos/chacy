@@ -6,6 +6,7 @@ import com.mpdeimos.chacy.PredicateMatcher;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,7 @@ public class LanguageValueTest
 		Assert.assertThat(
 				ALL,
 				CoreMatchers.everyItem(new PredicateMatcher<Language>("absent",
-						language -> !values.get(language).isPresent())));
+						language -> values.get(language) == null)));
 	}
 
 	/** Test class with annotation containing one value for all languages. */
@@ -68,7 +69,7 @@ public class LanguageValueTest
 		assertAllValues(values, ALL, "foo");
 	}
 
-	/** Tests specifying a language value will overriding all. */
+	/** Tests specifying a language value will override all. */
 	@Test
 	public void testOverrideAll()
 	{
@@ -83,6 +84,17 @@ public class LanguageValueTest
 		values = new LanguageValue();
 		values.set(new Language[] { Language.CSHARP }, "bar");
 		values.set(new Language[] {}, "foo");
+
+		assertAllValues(values, CSHARP, "bar");
+		assertAllValues(values, NOT_CSHARP, "foo");
+	}
+
+	/** Tests specifying a default value. */
+	@Test
+	public void testDefaultValue()
+	{
+		LanguageValue values = new LanguageValue(Arrays.asList("foo"));
+		values.set(new Language[] { Language.CSHARP }, "bar");
 
 		assertAllValues(values, CSHARP, "bar");
 		assertAllValues(values, NOT_CSHARP, "foo");
@@ -108,7 +120,7 @@ public class LanguageValueTest
 	{
 		Assert.assertThat(
 				allOf.stream().map(
-						language -> values.get(language).get()).flatMap(
+						language -> values.get(language)).flatMap(
 						list -> list.stream()).collect(
 						Collectors.toList()),
 				CoreMatchers.everyItem(CoreMatchers.is(value)));
