@@ -1,12 +1,13 @@
 package com.mpdeimos.chacy.model.deviant;
 
 import com.mpdeimos.chacy.Language;
+import com.mpdeimos.chacy.config.LanguageValue;
 import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
+import com.mpdeimos.chacy.util.Composition;
 import com.mpdeimos.chacy.util.FileUtil;
 import com.mpdeimos.chacy.util.StringUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 /** Deviant of a {@link Type} for a given language. */
@@ -18,7 +19,8 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	/** Constructor. */
 	public TypeDeviant(Type origin, Language language)
 	{
-		super(origin);
+		super(origin, Composition.from(
+				LanguageValue::get).swap().apply(language)::apply);
 		this.deviantInfo = new DeviantInfo<Type>(origin, language);
 		setUp();
 	}
@@ -52,22 +54,6 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	protected String getFileExtension()
 	{
 		return this.deviantInfo.getLanguage().getExtension();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getName()
-	{
-		return this.typeNameRules.get(this.deviantInfo.getLanguage()).orElse(
-				Arrays.asList(super.getName())).iterator().next();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getNamespace()
-	{
-		return this.packageNameRules.get(this.deviantInfo.getLanguage()).orElse(
-				Arrays.asList(super.getNamespace())).iterator().next();
 	}
 
 	/** @return the modifiers as strings of the deviant language. */

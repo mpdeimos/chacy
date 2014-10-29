@@ -27,17 +27,24 @@ public class LanguageValue
 	}
 
 	/** Constructor. */
-	public LanguageValue(List<String> defaultValue)
+	public LanguageValue(String... defaultValue)
+	{
+		this(defaultValue == null ? null : Arrays.asList(defaultValue));
+	}
+
+	/** Constructor. */
+	public LanguageValue(Collection<String> defaultValue)
 	{
 		this.values = new CollectionMap<>();
-		this.defaultValue = defaultValue;
+		this.defaultValue = defaultValue == null ? null : new ArrayList<>(
+				defaultValue);
 	}
 
 	/** Constructor. */
 	public LanguageValue(LanguageValue renameRules)
 	{
 		this.values = new CollectionMap<>(renameRules.values);
-		this.defaultValue = renameRules.defaultValue;
+		this.defaultValue = new ArrayList<>(renameRules.defaultValue);
 	}
 
 	/**
@@ -78,6 +85,12 @@ public class LanguageValue
 			return value;
 		}
 
+		return getDefault();
+	}
+
+	/** @returns the stored default value or <code>null</code>. */
+	public Collection<String> getDefault()
+	{
 		if (this.defaultValue == null)
 		{
 			return null;

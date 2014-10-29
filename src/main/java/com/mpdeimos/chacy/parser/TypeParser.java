@@ -2,6 +2,7 @@ package com.mpdeimos.chacy.parser;
 
 import com.mpdeimos.chacy.Chacy;
 import com.mpdeimos.chacy.ChacyException;
+import com.mpdeimos.chacy.config.LanguageValue;
 import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.ETypeKind;
 import com.mpdeimos.chacy.model.EVisibility;
@@ -31,14 +32,18 @@ public interface TypeParser extends Parser<TypeElement, Type>
 		{
 			String name = element.getSimpleName().toString();
 
+			LanguageValue typeName = parseName(element, name);
+			LanguageValue packageName = parseName(
+					JavaUtil.getPackage(element),
+					parsePackageName(element));
+
 			Type type = new Type(
-					parsePackageName(element),
-					name,
+					packageName,
+					typeName,
 					getTypeKind(element),
 					createModifierCollection(element));
 
 			parseSupportedLanguages(element, type);
-			parseRenameRules(element, type);
 			parseChildElements(element, type);
 
 			return type;
@@ -111,21 +116,22 @@ public interface TypeParser extends Parser<TypeElement, Type>
 			}
 		}
 
-		/** Parses the rename rules for the type. */
-		private static void parseRenameRules(Element element, Type type)
+		/**
+		 * Parses the rename rules for the element and returns it as language
+		 * value.
+		 */
+		private static LanguageValue parseName(
+				Element element,
+				String defaultValue)
 		{
+			LanguageValue name = new LanguageValue(defaultValue);
 			Chacy.Name nameAnnotation = element.getAnnotation(Chacy.Name.class);
 			if (nameAnnotation != null)
 			{
-				type.getTypeNameRules().set(nameAnnotation.value());
+				name.set(nameAnnotation.value());
 			}
 
-			nameAnnotation = JavaUtil.getPackage(element).getAnnotation(
-					Chacy.Name.class);
-			if (nameAnnotation != null)
-			{
-				type.getPackageNameRules().set(nameAnnotation.value());
-			}
+			return name;
 		}
 
 		/** @return the {@link ETypeKind} of the element. */
