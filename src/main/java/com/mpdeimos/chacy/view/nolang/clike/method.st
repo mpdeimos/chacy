@@ -1,5 +1,5 @@
 method(method) ::= <<
-private void <method>()
+private void <method.name>()
 {
 }
 >>

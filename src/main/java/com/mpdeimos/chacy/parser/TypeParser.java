@@ -6,6 +6,7 @@ import com.mpdeimos.chacy.config.LanguageValue;
 import com.mpdeimos.chacy.model.EModifier;
 import com.mpdeimos.chacy.model.ETypeKind;
 import com.mpdeimos.chacy.model.EVisibility;
+import com.mpdeimos.chacy.model.Method;
 import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.util.AssertUtil;
@@ -70,7 +71,8 @@ public interface TypeParser extends Parser<TypeElement, Type>
 		/** Parses the method from the type. */
 		private static void parseMethod(ExecutableElement method, Type type)
 		{
-			type.addMethod(method.getSimpleName().toString());
+			String name = method.getSimpleName().toString();
+			type.addMethod(new Method(new LanguageValue(name), null));
 		}
 
 		/** @return The package name of the element. */

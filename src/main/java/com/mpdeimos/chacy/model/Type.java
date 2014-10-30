@@ -15,7 +15,8 @@ public class Type extends Element
 	/** Map of package rename rules. */
 	protected final LanguageValue packageName;
 
-	private List<String> methods = new ArrayList<String>();
+	/** The methods of this type. */
+	private List<Method> methods = new ArrayList<Method>();
 
 	/** Constructor. */
 	public Type(
@@ -57,12 +58,12 @@ public class Type extends Element
 	}
 
 	/** TODO */
-	public void addMethod(String name)
+	public void addMethod(Method method)
 	{
-		this.methods.add(name);
+		this.methods.add(method);
 	}
 
-	public List<String> getMethods()
+	public List<Method> getMethods()
 	{
 		return this.methods;
 	}
