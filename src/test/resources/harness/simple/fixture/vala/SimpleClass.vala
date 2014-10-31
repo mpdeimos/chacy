@@ -1,10 +1,18 @@
 public class SimpleClass
 {
-	private void foo()
+	public void publicMethod()
 	{
 	}
 
-	private void bar()
+	protected void protectedMethod()
+	{
+	}
+
+	private void privateMethod()
+	{
+	}
+
+	public void packagePrivateMethod()
 	{
 	}
 }

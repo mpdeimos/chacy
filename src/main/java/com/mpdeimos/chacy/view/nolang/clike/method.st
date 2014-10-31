@@ -1,5 +1,5 @@
 method(method) ::= <<
-private void <method.name>()
+<type.modifiers; separator=" "> void <method.name>()
 {
 }
 >>

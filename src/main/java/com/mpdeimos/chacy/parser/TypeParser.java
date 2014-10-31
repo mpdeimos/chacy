@@ -72,7 +72,9 @@ public interface TypeParser extends Parser<TypeElement, Type>
 		private static void parseMethod(ExecutableElement method, Type type)
 		{
 			String name = method.getSimpleName().toString();
-			type.addMethod(new Method(new LanguageValue(name), null));
+			type.addMethod(new Method(
+					new LanguageValue(name),
+					createModifierCollection(method)));
 		}
 
 		/** @return The package name of the element. */
