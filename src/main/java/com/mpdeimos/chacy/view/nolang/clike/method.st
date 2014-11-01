@@ -1,5 +1,5 @@
 method(method) ::= <<
-<type.modifiers; separator=" "> void <method.name>()
+<method.modifiers; separator=" "> void <method.name>()
 {
 }
 >>

@@ -11,8 +11,4 @@ public class SimpleClass
 	private void privateMethod()
 	{
 	}
-
-	public void packagePrivateMethod()
-	{
-	}
 }

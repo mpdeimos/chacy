@@ -2,7 +2,6 @@ package com.mpdeimos.chacy.model.deviant;
 
 import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.LanguageValue;
-import com.mpdeimos.chacy.model.ModifierCollection;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.util.Composition;
 import com.mpdeimos.chacy.util.FileUtil;
@@ -60,11 +59,5 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	public List<String> getModifiers()
 	{
 		return this.modifiers.getModifiers(this.deviantInfo.getLanguage());
-	}
-
-	/** @return the modifier collection. */
-	public ModifierCollection getModifierCollection()
-	{
-		return this.modifiers;
 	}
 }

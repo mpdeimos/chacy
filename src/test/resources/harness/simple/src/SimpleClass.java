@@ -13,13 +13,13 @@ public class SimpleClass
 		System.out.println("bar");
 	}
 	
-	protected void privateMethod()
+	private void privateMethod()
 	{
 		System.out.println("bar");
 	}
 	
-	/* package*/ void packagePrivateMethod()
-	{
-		System.out.println("bar");
-	}
+//	/* package*/ void packagePrivateMethod()
+//	{
+//		System.out.println("bar");
+//	}
 }
