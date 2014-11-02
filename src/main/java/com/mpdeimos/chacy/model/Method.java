@@ -1,9 +1,6 @@
 package com.mpdeimos.chacy.model;
 
-import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.LanguageValue;
-
-import java.util.List;
 
 /**
  * Represents a Java Method.
@@ -20,9 +17,9 @@ public class Method extends Element
 		super(name, modifiers, LanguageValue::getDefault);
 	}
 
-	/** @return the modifiers as strings of the deviant language. */
-	public List<String> getModifiers()
+	/** Copy constructor. */
+	public Method(Method origin, LanguageValueAccessor accessor)
 	{
-		return this.modifiers.getModifiers(Language.CSHARP);
+		super(origin.name, origin.modifiers, accessor);
 	}
 }

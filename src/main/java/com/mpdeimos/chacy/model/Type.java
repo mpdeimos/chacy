@@ -31,12 +31,15 @@ public class Type extends Element
 	}
 
 	/** Copy constructor. */
-	public Type(Type origin, LanguageValueAccessor accessor)
+	public Type(
+			Type origin,
+			List<Method> methods,
+			LanguageValueAccessor accessor)
 	{
 		super(origin.name, origin.modifiers, accessor);
 		this.kind = origin.kind;
 		this.packageName = new LanguageValue(origin.packageName);
-		this.methods = new ArrayList<>(origin.methods);
+		this.methods = new ArrayList<>(methods);
 	}
 
 	/** @see #packageName */

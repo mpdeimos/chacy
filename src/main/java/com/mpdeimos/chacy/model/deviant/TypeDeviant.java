@@ -2,11 +2,13 @@ package com.mpdeimos.chacy.model.deviant;
 
 import com.mpdeimos.chacy.Language;
 import com.mpdeimos.chacy.config.LanguageValue;
+import com.mpdeimos.chacy.model.Method;
 import com.mpdeimos.chacy.model.Type;
 import com.mpdeimos.chacy.util.Composition;
 import com.mpdeimos.chacy.util.FileUtil;
 import com.mpdeimos.chacy.util.StringUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** Deviant of a {@link Type} for a given language. */
@@ -18,10 +20,21 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	/** Constructor. */
 	public TypeDeviant(Type origin, Language language)
 	{
-		super(origin, Composition.from(
+		super(origin, toMethodDeviants(origin, language), Composition.from(
 				LanguageValue::get).swap().apply(language)::apply);
 		this.deviantInfo = new DeviantInfo<Type>(origin, language);
 		setUp();
+	}
+
+	/** Converts the methods to method deviants. */
+	private static List<Method> toMethodDeviants(Type origin, Language language)
+	{
+		List<Method> methods = new ArrayList<>();
+		for (Method method : origin.getMethods())
+		{
+			methods.add(new MethodDeviant(method, language));
+		}
+		return methods;
 	}
 
 	/** Template method that can be overridden in implementing classes. */
