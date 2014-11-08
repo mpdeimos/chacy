@@ -1,12 +1,14 @@
 package com.mpdeimos.chacy.model.deviant;
 
 import com.mpdeimos.chacy.Language;
-import com.mpdeimos.chacy.model.ModifierCollection;
+import com.mpdeimos.chacy.config.LanguageValue;
+import com.mpdeimos.chacy.model.Method;
 import com.mpdeimos.chacy.model.Type;
+import com.mpdeimos.chacy.util.Composition;
 import com.mpdeimos.chacy.util.FileUtil;
 import com.mpdeimos.chacy.util.StringUtil;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Deviant of a {@link Type} for a given language. */
@@ -18,9 +20,21 @@ public class TypeDeviant extends Type implements Deviant<Type>
 	/** Constructor. */
 	public TypeDeviant(Type origin, Language language)
 	{
-		super(origin);
+		super(origin, toMethodDeviants(origin, language), Composition.from(
+				LanguageValue::get).swap().apply(language)::apply);
 		this.deviantInfo = new DeviantInfo<Type>(origin, language);
 		setUp();
+	}
+
+	/** Converts the methods to method deviants. */
+	private static List<Method> toMethodDeviants(Type origin, Language language)
+	{
+		List<Method> methods = new ArrayList<>();
+		for (Method method : origin.getMethods())
+		{
+			methods.add(new MethodDeviant(method, language));
+		}
+		return methods;
 	}
 
 	/** Template method that can be overridden in implementing classes. */
@@ -54,31 +68,9 @@ public class TypeDeviant extends Type implements Deviant<Type>
 		return this.deviantInfo.getLanguage().getExtension();
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public String getName()
-	{
-		return this.typeNameRules.get(this.deviantInfo.getLanguage()).orElse(
-				Arrays.asList(super.getName())).iterator().next();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public String getNamespace()
-	{
-		return this.packageNameRules.get(this.deviantInfo.getLanguage()).orElse(
-				Arrays.asList(super.getNamespace())).iterator().next();
-	}
-
 	/** @return the modifiers as strings of the deviant language. */
 	public List<String> getModifiers()
 	{
 		return this.modifiers.getModifiers(this.deviantInfo.getLanguage());
-	}
-
-	/** @return the modifier collection. */
-	public ModifierCollection getModifierCollection()
-	{
-		return this.modifiers;
 	}
 }

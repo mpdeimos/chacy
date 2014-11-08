@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.annotation.processing.Processor;
@@ -32,6 +33,13 @@ public abstract class HarnessTestBase
 {
 	/** The path where the harness source data is stored. */
 	private static final String HARNESS_DATA = "src/test/resources/harness";
+
+	/**
+	 * Predicate that identifies files that should be temporarily excluded from
+	 * the harness.
+	 */
+	private static final Predicate<Path> IGNORE_FILE = path -> path.getFileName().toString().startsWith(
+			"_.");
 
 	/** Rule to catch the JUnit test name. */
 	@Rule
@@ -140,6 +148,7 @@ public abstract class HarnessTestBase
 
 			List<Path> paths = FileUtil.listFiles(
 					Paths.get(HARNESS_DATA, this.harness, "src"), filenames);
+			paths.removeIf(IGNORE_FILE);
 
 			List<JavaFileObject> compilationUnits = new ArrayList<JavaFileObject>();
 			for (Path path : paths)
@@ -235,9 +244,15 @@ public abstract class HarnessTestBase
 		{
 			Set<Path> fixtureFiles = new HashSet<Path>(
 					FileUtil.listFiles(this.fixture));
+			fixtureFiles.removeIf(IGNORE_FILE);
 
 			for (Path source : FileUtil.listFiles(this.output))
 			{
+				if (IGNORE_FILE.test(source))
+				{
+					continue;
+				}
+
 				Path relative = source.subpath(this.output.getNameCount(),
 						source.getNameCount());
 				Path fixture = this.fixture.resolve(relative);

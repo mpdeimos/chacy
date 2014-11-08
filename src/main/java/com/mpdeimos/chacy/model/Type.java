@@ -3,65 +3,49 @@ package com.mpdeimos.chacy.model;
 import com.mpdeimos.chacy.config.LanguageValue;
 import com.mpdeimos.chacy.util.JavaUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Represents a type extracted from Java, e.g. a class, interface, etc. */
 public class Type extends Element
 {
-	/** The namespace of the type. */
-	protected String namespace;
-
-	/** The name of the type. */
-	protected String name;
-
 	/** The kind of this type. */
 	protected ETypeKind kind;
 
-	/** Map of type rename rules. */
-	protected LanguageValue typeNameRules = new LanguageValue();
-
 	/** Map of package rename rules. */
-	protected LanguageValue packageNameRules = new LanguageValue();
+	protected final LanguageValue packageName;
 
-	/** The visibility of the type. */
-	protected EVisibility visibility;
-
-	/** Modifiers of the type. */
-	protected final ModifierCollection modifiers;
+	/** The methods of this type. */
+	private List<Method> methods = new ArrayList<Method>();
 
 	/** Constructor. */
 	public Type(
-			String namespace,
-			String name,
+			LanguageValue packageName,
+			LanguageValue typeName,
 			ETypeKind kind,
 			ModifierCollection modifiers)
 	{
-		this.namespace = namespace;
-		this.name = name;
+		super(typeName, modifiers, LanguageValue::getDefault);
 		this.kind = kind;
-		this.modifiers = modifiers;
+		this.packageName = packageName;
 	}
 
 	/** Copy constructor. */
-	public Type(Type origin)
+	public Type(
+			Type origin,
+			List<Method> methods,
+			LanguageValueAccessor accessor)
 	{
-		this.namespace = origin.namespace;
-		this.name = origin.name;
+		super(origin.name, origin.modifiers, accessor);
 		this.kind = origin.kind;
-		this.typeNameRules = new LanguageValue(origin.typeNameRules);
-		this.packageNameRules = new LanguageValue(origin.packageNameRules);
-		this.visibility = origin.visibility;
-		this.modifiers = new ModifierCollection(origin.modifiers);
+		this.packageName = new LanguageValue(origin.packageName);
+		this.methods = new ArrayList<>(methods);
 	}
 
-	/** @see #namespace */
+	/** @see #packageName */
 	public String getNamespace()
 	{
-		return this.namespace;
-	}
-
-	/** @see #name */
-	public String getName()
-	{
-		return this.name;
+		return this.accessor.access(this.packageName).iterator().next();
 	}
 
 	/** @return the qualified name of the type in namespaced notation. */
@@ -76,15 +60,14 @@ public class Type extends Element
 		return this.kind;
 	}
 
-	/** @see #typeNameRules */
-	public LanguageValue getTypeNameRules()
+	/** TODO */
+	public void addMethod(Method method)
 	{
-		return this.typeNameRules;
+		this.methods.add(method);
 	}
 
-	/** @see #packageNameRules */
-	public LanguageValue getPackageNameRules()
+	public List<Method> getMethods()
 	{
-		return this.packageNameRules;
+		return this.methods;
 	}
 }
